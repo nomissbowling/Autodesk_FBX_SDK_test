@@ -4,11 +4,26 @@
   http://marupeke296.com/FBX2019_No2_LoadAndTerminate.html
   http://marupeke296.com/FBX2019_No3_node.html
   http://marupeke296.com/FBX_No4_VertexAndPolygon.html (old)
+  http://marupeke296.com/FBX_No5_Normal.html (old)
+  http://marupeke296.com/FBX_No6_UV.html (old)
+  http://marupeke296.com/FBX_No7_TextureMaterial.html (old)
+  http://marupeke296.com/FBX_No8_Position.html (old)
+  http://marupeke296.com/FBX_No9_Bone.html (old)
+  http://marupeke296.com/FBX_No10_Camera.html (old)
   https://yttm-work.jp/model_render/model_render_0008.html
   https://yttm-work.jp/model_render/model_render_0009.html
   https://yttm-work.jp/model_render/model_render_0010.html
   https://yttm-work.jp/model_render/model_render_0011.html
   https://yttm-work.jp/model_render/model_render_0012.html
+  http://gameprogrammingunit.web.fc2.com/fbx_sdk/initialize.htm
+  http://gameprogrammingunit.web.fc2.com/fbx_sdk/node.htm
+  http://gameprogrammingunit.web.fc2.com/fbx_sdk/mesh.htm
+  http://gameprogrammingunit.web.fc2.com/fbx_sdk/material.htm
+  http://gameprogrammingunit.web.fc2.com/fbx_sdk/unitychan.htm
+  http://whaison.jugem.jp/?eid=713
+  https://qiita.com/kota017a/items/071c8b085c758c769758
+  https://qiita.com/kota017a/items/1cdc347dec9800ae66bd
+  https://qiita.com/kota017a/items/dd0fab59c06ca72dd3f6
 */
 
 #include <stdio.h>
@@ -99,7 +114,7 @@ int main(int ac, char **av)
   const char *fn = IMPFBX;
   fprintf(stdout, "Loading: [%s]\n", fn);
   if(importer->Initialize(fn, -1, manager->GetIOSettings()) == false){
-    fprintf(stderr, "import error\n");
+    fprintf(stderr, "import: %s\n", importer->GetStatus().GetErrorString());
   }else{
     FbxScene *scene = FbxScene::Create(manager, "Scene");
     importer->Import(scene);
