@@ -17,7 +17,17 @@
 
 #include <fbxsdk.h>
 
-#define IMPFBX "D:\\prj\\__Unity\\Metasequoia_Blender\\unitychan.fbx"
+#define IMPBASE "D:\\prj\\__Unity\\Metasequoia_Blender\\"
+#if 0
+#define IMPFBX IMPBASE"unitychan.fbx"
+#define IMPSUB IMPBASE"UnityChanShader\\"
+#else
+#define IMPFBX IMPBASE"unitychan_SD_humanoid.fbx"
+#define IMPSUB IMPBASE"UnityChanSD\\"
+#endif
+#define IMPSHADER IMPSUB"Shader\\" // .cg .shader
+#define IMPMATERIALS IMPSUB"Materials\\" // .mat
+#define IMPTEXTURE IMPSUB"Texture\\" // .tga
 
 const char *typeNames[] = {
   "eUnknown", "eNull", "eMarker", "eSkeleton", "eMesh", "eNurbs",
@@ -65,8 +75,13 @@ void GetMesh(FbxNodeAttribute *a)
 {
   FbxMesh *m = (FbxMesh *)a;
   int polynum = m->GetPolygonCount();
-  int vtxnum = m->GetPolygonVertexCount();
+  int vtxnum = m->GetPolygonVertexCount(); // count of indices
   int *indexAry = m->GetPolygonVertices();
+#if 0
+  int index = m->GetPolygonVertex(p, n); // 0-polynum, 0-2 (when all triangle)
+  int posnum = m->GetControlPointsCount(); // count of vertices
+  FbxVector4 *posAry = m->GetControlPoints(); // must set posAry[m][3] = 1;
+#endif
   static char buf[4096];
   buf[0] = '\0';
   sprintf_s(buf, sizeof(buf), "%6d polygons, %6d vertices", polynum, vtxnum);

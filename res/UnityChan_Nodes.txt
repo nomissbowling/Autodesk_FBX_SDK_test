@@ -1,0 +1,191 @@
+Loading: [unitychan.fbx]
+   0[RootNode](0)
+    0[Character1_Reference](1:eNull)
+     0[Character1_Hips](1:eSkeleton)
+      0[Character1_LeftUpLeg](1:eSkeleton)
+       0[Character1_LeftLeg](1:eSkeleton)
+        0[Character1_LeftFoot](1:eSkeleton)
+         0[Character1_LeftToeBase](1:eSkeleton)
+      1[Character1_RightUpLeg](1:eSkeleton)
+       0[Character1_RightLeg](1:eSkeleton)
+        0[Character1_RightFoot](1:eSkeleton)
+         0[Character1_RightToeBase](1:eSkeleton)
+      2[Character1_Spine](1:eSkeleton)
+       0[Character1_Spine1](1:eSkeleton)
+        0[Character1_Spine2](1:eSkeleton)
+         0[Character1_LeftShoulder](1:eSkeleton)
+          0[Character1_LeftArm](1:eSkeleton)
+           0[Character1_LeftForeArm](1:eSkeleton)
+            0[Character1_LeftHand](1:eSkeleton)
+             0[Character1_LeftHandThumb1](1:eSkeleton)
+              0[Character1_LeftHandThumb2](1:eSkeleton)
+               0[Character1_LeftHandThumb3](1:eSkeleton)
+                0[Character1_LeftHandThumb4](1:eSkeleton)
+             1[Character1_LeftHandIndex1](1:eSkeleton)
+              0[Character1_LeftHandIndex2](1:eSkeleton)
+               0[Character1_LeftHandIndex3](1:eSkeleton)
+                0[Character1_LeftHandIndex4](1:eSkeleton)
+             2[Character1_LeftHandMiddle1](1:eSkeleton)
+              0[Character1_LeftHandMiddle2](1:eSkeleton)
+               0[Character1_LeftHandMiddle3](1:eSkeleton)
+                0[Character1_LeftHandMiddle4](1:eSkeleton)
+             3[Character1_LeftHandRing1](1:eSkeleton)
+              0[Character1_LeftHandRing2](1:eSkeleton)
+               0[Character1_LeftHandRing3](1:eSkeleton)
+                0[Character1_LeftHandRing4](1:eSkeleton)
+             4[Character1_LeftHandPinky1](1:eSkeleton)
+              0[Character1_LeftHandPinky2](1:eSkeleton)
+               0[Character1_LeftHandPinky3](1:eSkeleton)
+                0[Character1_LeftHandPinky4](1:eSkeleton)
+            1[J_L_Sode_D00](1:eSkeleton)
+             0[J_L_Sode_D01](1:eSkeleton)
+            2[J_L_Sode_A00](1:eSkeleton)
+             0[J_L_Sode_A01](1:eSkeleton)
+            3[J_L_Sode_B00](1:eSkeleton)
+             0[J_L_Sode_B01](1:eSkeleton)
+            4[J_L_Sode_C00](1:eSkeleton)
+             0[J_L_Sode_C01](1:eSkeleton)
+         1[Character1_RightShoulder](1:eSkeleton)
+          0[Character1_RightArm](1:eSkeleton)
+           0[Character1_RightForeArm](1:eSkeleton)
+            0[Character1_RightHand](1:eSkeleton)
+             0[Character1_RightHandThumb1](1:eSkeleton)
+              0[Character1_RightHandThumb2](1:eSkeleton)
+               0[Character1_RightHandThumb3](1:eSkeleton)
+                0[Character1_RightHandThumb4](1:eSkeleton)
+             1[Character1_RightHandIndex1](1:eSkeleton)
+              0[Character1_RightHandIndex2](1:eSkeleton)
+               0[Character1_RightHandIndex3](1:eSkeleton)
+                0[Character1_RightHandIndex4](1:eSkeleton)
+             2[Character1_RightHandMiddle1](1:eSkeleton)
+              0[Character1_RightHandMiddle2](1:eSkeleton)
+               0[Character1_RightHandMiddle3](1:eSkeleton)
+                0[Character1_RightHandMiddle4](1:eSkeleton)
+             3[Character1_RightHandRing1](1:eSkeleton)
+              0[Character1_RightHandRing2](1:eSkeleton)
+               0[Character1_RightHandRing3](1:eSkeleton)
+                0[Character1_RightHandRing4](1:eSkeleton)
+             4[Character1_RightHandPinky1](1:eSkeleton)
+              0[Character1_RightHandPinky2](1:eSkeleton)
+               0[Character1_RightHandPinky3](1:eSkeleton)
+                0[Character1_RightHandPinky4](1:eSkeleton)
+            1[J_R_Sode_A00](1:eSkeleton)
+             0[J_R_Sode_A01](1:eSkeleton)
+            2[J_R_Sode_B00](1:eSkeleton)
+             0[J_R_Sode_B01](1:eSkeleton)
+            3[J_R_Sode_D00](1:eSkeleton)
+             0[J_R_Sode_D01](1:eSkeleton)
+            4[J_R_Sode_C00](1:eSkeleton)
+             0[J_R_Sode_C01](1:eSkeleton)
+         2[Character1_Neck](1:eSkeleton)
+          0[Character1_Head](1:eSkeleton)
+           0[head_back](1:eMesh) MeshName[]
+               142 polygons,    426 vertices
+           1[eye_base_old](1:eMesh) MeshName[]
+                96 polygons,    288 vertices
+           2[eye_L_old](1:eMesh) MeshName[]
+                22 polygons,     66 vertices
+           3[eye_R_old](1:eMesh) MeshName[]
+                22 polygons,     66 vertices
+           4[MTH_DEF](1:eMesh) MeshName[]
+               886 polygons,   2658 vertices
+           5[EYE_DEF](1:eMesh) MeshName[]
+               626 polygons,   1878 vertices
+            0[EL_DEF](1:eMesh) MeshName[]
+                372 polygons,   1116 vertices
+           6[BLW_DEF](1:eMesh) MeshName[]
+                36 polygons,    108 vertices
+           7[J_L_HairSide_00](1:eSkeleton)
+            0[J_L_HairSide_01](1:eSkeleton)
+             0[J_L_HairSide_02](1:eSkeleton)
+           8[J_R_HairSide_00](1:eSkeleton)
+            0[J_R_HairSide_01](1:eSkeleton)
+             0[J_R_HairSide_02](1:eSkeleton)
+           9[J_L_HairFront_00](1:eSkeleton)
+            0[J_L_HairFront_01](1:eSkeleton)
+          10[J_R_HairFront_00](1:eSkeleton)
+            0[J_R_HairFront_01](1:eSkeleton)
+          11[J_L_HeadRibbon_00](1:eSkeleton)
+            0[J_L_HeadRibbon_01](1:eSkeleton)
+             0[J_L_HeadRibbon_02](1:eSkeleton)
+          12[J_R_HeadRibbon_00](1:eSkeleton)
+            0[J_R_HeadRibbon_01](1:eSkeleton)
+             0[J_R_HeadRibbon_02](1:eSkeleton)
+          13[J_L_HairTail_00](1:eSkeleton)
+            0[J_L_HairTail_01](1:eSkeleton)
+             0[J_L_HairTail_02](1:eSkeleton)
+              0[J_L_HairTail_03](1:eSkeleton)
+               0[J_L_HairTail_04](1:eSkeleton)
+                0[J_L_HairTail_05](1:eSkeleton)
+                 0[J_L_HairTail_06](1:eSkeleton)
+          14[J_R_HairTail_00](1:eSkeleton)
+            0[J_R_HairTail_01](1:eSkeleton)
+             0[J_R_HairTail_02](1:eSkeleton)
+              0[J_R_HairTail_03](1:eSkeleton)
+               0[J_R_HairTail_04](1:eSkeleton)
+                0[J_R_HairTail_05](1:eSkeleton)
+                 0[J_R_HairTail_06](1:eSkeleton)
+        1[J_Mune_root_00](1:eSkeleton)
+         0[J_Mune_root_01](1:eSkeleton)
+         1[J_R_Mune_00](1:eSkeleton)
+          0[J_R_Mune_01](1:eSkeleton)
+           0[J_R_Mune_02](1:eSkeleton)
+         2[J_L_Mune_00](1:eSkeleton)
+          0[J_L_Mune_01](1:eSkeleton)
+           0[J_L_Mune_02](1:eSkeleton)
+       1[J_L_SusoSide_00](1:eSkeleton)
+        0[J_L_SusoSide_01](1:eSkeleton)
+       2[J_R_SusoSide_00](1:eSkeleton)
+        0[J_R_SusoSide_01](1:eSkeleton)
+      3[J_L_Skirt_00](1:eSkeleton)
+       0[J_L_Skirt_01](1:eSkeleton)
+        0[J_L_Skirt_02](1:eSkeleton)
+       1[J_L_SusoFront_00](1:eSkeleton)
+        0[J_L_SusoFront_01](1:eSkeleton)
+      4[J_L_SkirtBack_00](1:eSkeleton)
+       0[J_L_SkirtBack_01](1:eSkeleton)
+        0[J_L_SkirtBack_02](1:eSkeleton)
+       1[J_L_SusoBack_00](1:eSkeleton)
+        0[J_L_SusoBack_01](1:eSkeleton)
+      5[J_R_Skirt_00](1:eSkeleton)
+       0[J_R_Skirt_01](1:eSkeleton)
+        0[J_R_Skirt_02](1:eSkeleton)
+       1[J_R_SusoFront_00](1:eSkeleton)
+        0[J_R_SusoFront_01](1:eSkeleton)
+      6[J_R_SkirtBack_00](1:eSkeleton)
+       0[J_R_SkirtBack_01](1:eSkeleton)
+        0[J_R_SkirtBack_02](1:eSkeleton)
+       1[J_R_SusoBack_00](1:eSkeleton)
+        0[J_R_SusoBack_01](1:eSkeleton)
+    1[mesh_root](1:eNull)
+     0[tail](1:eMesh) MeshName[]
+        1168 polygons,   3504 vertices
+     1[hair_frontside](1:eMesh) MeshName[]
+         530 polygons,   1590 vertices
+     2[hair_front](1:eMesh) MeshName[]
+         227 polygons,    681 vertices
+     3[tail_bottom](1:eMesh) MeshName[]
+         658 polygons,   1974 vertices
+     4[hair_accce](1:eMesh) MeshName[]
+         240 polygons,    720 vertices
+     5[skin](1:eMesh) MeshName[]
+        2994 polygons,   8982 vertices
+     6[uwagi](1:eMesh) MeshName[]
+        1286 polygons,   3858 vertices
+     7[uwagi_BK](1:eMesh) MeshName[]
+        1504 polygons,   4512 vertices
+     8[Shirts](1:eMesh) MeshName[]
+         653 polygons,   1959 vertices
+     9[shirts_sode](1:eMesh) MeshName[]
+        1444 polygons,   4332 vertices
+    10[shirts_sode_BK](1:eMesh) MeshName[]
+         408 polygons,   1224 vertices
+    11[button](1:eMesh) MeshName[]
+         210 polygons,    630 vertices
+    12[hairband](1:eMesh) MeshName[]
+         186 polygons,    558 vertices
+    13[cheek](1:eMesh) MeshName[]
+          24 polygons,     72 vertices
+    14[Leg](1:eMesh) MeshName[]
+        2322 polygons,   6966 vertices
+done.
