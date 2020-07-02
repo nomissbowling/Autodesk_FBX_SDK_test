@@ -13,6 +13,13 @@
 
 #define IMPFBX "D:\\prj\\__Unity\\Metasequoia_Blender\\unitychan.fbx"
 
+const char *typeNames[] = {
+  "eUnknown", "eNull", "eMarker", "eSkeleton", "eMesh", "eNurbs",
+  "ePatch", "eCamera", "eCameraStereo", "eCameraSwitcher", "eLight",
+  "eOpticalReference", "eOpticalMarker", "eNurbsCurve", "eTrimNurbsSurface",
+  "eBoundary", "eNurbsSurface", "eShape", "eLODGroup", "eSubDiv",
+  "eCachedEffect", "eLine"};
+
 void depth(int d)
 {
   char fmt[256];
@@ -20,15 +27,24 @@ void depth(int d)
   fprintf(stdout, fmt, "");
 }
 
-void GetMesh(FbxNode *node, int d, int n)
+void GetNodeAndAttributes(FbxNode *node, int d, int n)
 {
   depth(d);
   fprintf(stdout, "%4d[%s]", n, node->GetName());
+  char buf[4096] = {0};
+  int p = 0;
+  int attrcount = node->GetNodeAttributeCount();
+  for(int i = 0; i < attrcount; ++i){
+    FbxNodeAttribute *a = node->GetNodeAttributeByIndex(i);
+    FbxNodeAttribute::EType t = a->GetAttributeType();
+    p += sprintf_s(buf + p, sizeof(buf) - p, ":%s", typeNames[t]);
+  }
+  fprintf(stdout, "(%d%s)", attrcount, buf);
   FbxMesh *mesh = node->GetMesh();
   if(mesh) fprintf(stdout, " Mesh=[%s]\n", mesh->GetName());
   else fprintf(stdout, "\n");
   for(int i = 0; i < node->GetChildCount(); ++i)
-    GetMesh(node->GetChild(i), d + 1, i);
+    GetNodeAndAttributes(node->GetChild(i), d + 1, i);
 }
 
 int main(int ac, char **av)
@@ -48,7 +64,7 @@ int main(int ac, char **av)
     importer->Destroy();
     FbxNode *root = scene->GetRootNode();
     if(!root) fprintf(stderr, "no root\n");
-    else GetMesh(root, 0, 0);
+    else GetNodeAndAttributes(root, 0, 0);
   }
   manager->Destroy();
 
