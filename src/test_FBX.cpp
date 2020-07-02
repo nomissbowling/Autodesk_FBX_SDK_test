@@ -3,6 +3,7 @@
 
   http://marupeke296.com/FBX2019_No2_LoadAndTerminate.html
   http://marupeke296.com/FBX2019_No3_node.html
+  http://marupeke296.com/FBX_No4_VertexAndPolygon.html (old)
   https://yttm-work.jp/model_render/model_render_0008.html
   https://yttm-work.jp/model_render/model_render_0009.html
   https://yttm-work.jp/model_render/model_render_0010.html
@@ -78,6 +79,7 @@ int main(int ac, char **av)
 
   FbxManager *manager = FbxManager::Create();
   FbxIOSettings *iosettings = FbxIOSettings::Create(manager, IOSROOT);
+  manager->SetIOSettings(iosettings);
   FbxImporter *importer = FbxImporter::Create(manager, "Importer");
   const char *fn = IMPFBX;
   fprintf(stdout, "Loading: [%s]\n", fn);
@@ -87,6 +89,10 @@ int main(int ac, char **av)
     FbxScene *scene = FbxScene::Create(manager, "Scene");
     importer->Import(scene);
     importer->Destroy();
+#if 1
+    FbxGeometryConverter geometryConverter(manager);
+    geometryConverter.Triangulate(scene, true); // convert all polygons triangle
+#endif
     FbxNode *root = scene->GetRootNode();
     if(!root) fprintf(stderr, "no root\n");
     else GetNodeAndAttributes(root, 0, 0);
