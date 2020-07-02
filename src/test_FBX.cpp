@@ -82,6 +82,54 @@ void GetNodeAndAttributes(FbxNode *node, int d, int n)
     FbxNodeAttribute::EType t = a->GetAttributeType();
     if(t == FbxNodeAttribute::eMesh){ depth(d); GetMesh(a); }
   }
+#if 0
+  int matcount = scene->GetMaterialCount();
+  for(int i = 0; i < matcount; ++i){
+    FbxSurfaceMaterial *mat = scene->GetMaterial(i);
+    char *materialName = mat->GetName();
+  }
+#endif
+#if 0
+  int matcount = node->GetMaterialCount();
+  for(int i = 0; i < matcount; ++i){
+    FbxSurfaceMaterial *mat = node->GetMaterial(i);
+  }
+#endif
+#if 0
+  if(mat->GetClassId().Is(FbxSurfaceLambert::ClassId)){
+    FbxSurfaceLambert *sl = (FbxSurfaceLambert *)mat;
+    FbxDouble3 diffuse = sl->Diffuse; // float r|g|b = diffuse[0|1|2];
+  }else if(mat->GetClassId().Is(FbxSurfacePhong::ClassId)){
+    FbxSurfacePhong *sp = (FbxSurfacePhong *)mat;
+    FbxDouble3 diffuse = sp->Diffuse;
+  }
+#endif
+#if 0
+  mat->FindProperty(FbxSurfaceMaterial::sDiffuse);
+  int fileTextureCount = prop.GetSrcObjectCount<FbxFileTexture>();
+  FbxFileTexture *tex = scene->GetSrcObject<FbxFileTexture>(i);
+  char *fn = tex->GetFileName();
+#endif
+#if 0
+  FbxImplementation *impl = GetImplementation(mat, FBXSDK_IMPLEMENTATION_CGFX);
+  FbxBindingTable *rootTable = impl->GetRootTable();
+  size_t entryCount = rootTable->GetEntryCount();
+  FbxBindingTableEntry &entry = rootTable->GetEntry(i);
+  char *name = entry.GetSource();
+  FbxProperty prop = mat->RootProperty.FindHierarchical(name);
+  int fileTextureCount = prop.GetSrcObjectCount<FbxFileTexture>(); // same
+  FbxFileTexture *tex = prop.GetSrcObject<FbxFileTexture>(i); // prop<->scene
+  char *fn = tex->GetFileName();
+#endif
+#if 0
+  FbxDouble3 translation = node->LclTranslation.Get();
+  FbxDouble3 rotation = node->LclRotation.Get();
+  FbxDouble3 scaling = node->LclScaling.Get();
+  FbxMatrix m = node->EvaluateGlobalTransform(
+    FBXSDK_TIME_INFINITE, // FbxTime pTime
+    FbxNode::eSourcePivot, // FbxNode::EPivotSet pPivotSet
+    false); // bool pApplyTarget
+#endif
   for(int i = 0; i < node->GetChildCount(); ++i)
     GetNodeAndAttributes(node->GetChild(i), d + 1, i);
 }
@@ -93,9 +141,19 @@ void GetMesh(FbxNodeAttribute *a)
   int vtxnum = m->GetPolygonVertexCount(); // count of indices
   int *indexAry = m->GetPolygonVertices();
 #if 0
+  int k = m->GetPolygonSize(p); // vertices count of polygon index p [3|4]?
   int index = m->GetPolygonVertex(p, n); // 0-polynum, 0-2 (when all triangle)
   int posnum = m->GetControlPointsCount(); // count of vertices
   FbxVector4 *posAry = m->GetControlPoints(); // must set posAry[m][3] = 1;
+  FbxVector4 cp = m->GetControlPointAt(index);
+  FbxVector4 normal;
+  m->GetPolygonVertexNormal(p, n, normal);
+  FbxStringList uvSetNameList;
+  m->GetUVSetNames(uvSetNameList);
+  char *uvSetName = uvSetNameList.GetStringAt(p);
+  FbxVector2 uv;
+  bool unmapped;
+  m->GetPolygonVertexUV(p, n, uvSetName, uv, unmapped);
 #endif
   static char buf[4096];
   buf[0] = '\0';
@@ -113,16 +171,14 @@ int main(int ac, char **av)
   FbxImporter *importer = FbxImporter::Create(manager, "Importer");
   const char *fn = IMPFBX;
   fprintf(stdout, "Loading: [%s]\n", fn);
-  if(importer->Initialize(fn, -1, manager->GetIOSettings()) == false){
+  if(!importer->Initialize(fn, -1, manager->GetIOSettings())){
     fprintf(stderr, "import: %s\n", importer->GetStatus().GetErrorString());
   }else{
     FbxScene *scene = FbxScene::Create(manager, "Scene");
     importer->Import(scene);
     importer->Destroy();
-#if 1
     FbxGeometryConverter geometryConverter(manager);
     geometryConverter.Triangulate(scene, true); // convert all polygons triangle
-#endif
     FbxNode *root = scene->GetRootNode();
     if(!root) fprintf(stderr, "no root\n");
     else GetNodeAndAttributes(root, 0, 0);
