@@ -3,6 +3,11 @@
 
   http://marupeke296.com/FBX2019_No2_LoadAndTerminate.html
   http://marupeke296.com/FBX2019_No3_node.html
+  https://yttm-work.jp/model_render/model_render_0008.html
+  https://yttm-work.jp/model_render/model_render_0009.html
+  https://yttm-work.jp/model_render/model_render_0010.html
+  https://yttm-work.jp/model_render/model_render_0011.html
+  https://yttm-work.jp/model_render/model_render_0012.html
 */
 
 #include <stdio.h>
@@ -19,6 +24,8 @@ const char *typeNames[] = {
   "eOpticalReference", "eOpticalMarker", "eNurbsCurve", "eTrimNurbsSurface",
   "eBoundary", "eNurbsSurface", "eShape", "eLODGroup", "eSubDiv",
   "eCachedEffect", "eLine"};
+
+void GetMesh(FbxNodeAttribute *a);
 
 void depth(int d)
 {
@@ -42,10 +49,27 @@ void GetNodeAndAttributes(FbxNode *node, int d, int n)
   }
   fprintf(stdout, "(%d%s)", attrcount, buf);
   FbxMesh *mesh = node->GetMesh();
-  if(mesh) fprintf(stdout, " Mesh=[%s]\n", mesh->GetName());
+  if(mesh) fprintf(stdout, " MeshName[%s]\n", mesh->GetName());
   else fprintf(stdout, "\n");
+  for(int i = 0; i < attrcount; ++i){
+    FbxNodeAttribute *a = node->GetNodeAttributeByIndex(i);
+    FbxNodeAttribute::EType t = a->GetAttributeType();
+    if(t == FbxNodeAttribute::eMesh){ depth(d); GetMesh(a); }
+  }
   for(int i = 0; i < node->GetChildCount(); ++i)
     GetNodeAndAttributes(node->GetChild(i), d + 1, i);
+}
+
+void GetMesh(FbxNodeAttribute *a)
+{
+  FbxMesh *m = (FbxMesh *)a;
+  int polynum = m->GetPolygonCount();
+  int vtxnum = m->GetPolygonVertexCount();
+  int *indexAry = m->GetPolygonVertices();
+  static char buf[4096];
+  buf[0] = '\0';
+  sprintf_s(buf, sizeof(buf), "%6d polygons, %6d vertices", polynum, vtxnum);
+  fprintf(stdout, "    %s\n", buf);
 }
 
 int main(int ac, char **av)
