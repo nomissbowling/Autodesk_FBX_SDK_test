@@ -31,7 +31,8 @@ void GetNodeAndAttributes(FbxNode *node, int d, int n)
 {
   depth(d);
   fprintf(stdout, "%4d[%s]", n, node->GetName());
-  char buf[4096] = {0};
+  static char buf[4096];
+  buf[0] = '\0';
   int p = 0;
   int attrcount = node->GetNodeAttributeCount();
   for(int i = 0; i < attrcount; ++i){
