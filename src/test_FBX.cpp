@@ -34,15 +34,34 @@
 
 #define IMPBASE "D:\\prj\\__Unity\\Metasequoia_Blender\\"
 #if 0
+#if 0
 #define IMPFBX IMPBASE"unitychan.fbx"
 #define IMPSUB IMPBASE"UnityChanShader\\"
+#define IMPSHADER IMPSUB"Shader\\" // .cg .shader
+#define IMPMATERIALS IMPSUB"Materials\\" // .mat
+#define IMPTEXTURES IMPSUB"Texture\\" // .tga
 #else
 #define IMPFBX IMPBASE"unitychan_SD_humanoid.fbx"
 #define IMPSUB IMPBASE"UnityChanSD\\"
-#endif
 #define IMPSHADER IMPSUB"Shader\\" // .cg .shader
 #define IMPMATERIALS IMPSUB"Materials\\" // .mat
-#define IMPTEXTURE IMPSUB"Texture\\" // .tga
+#define IMPTEXTURES IMPSUB"Textures\\" // .tga
+#endif
+#else
+#if 1
+#define IMPFBX IMPBASE"unityExportSphere.fbx"
+#define IMPSUB IMPBASE"UnityExportSphere\\" // empty
+#define IMPSHADER IMPSUB"Shader\\" // empty
+#define IMPMATERIALS IMPSUB"Materials\\" // empty
+#define IMPTEXTURES IMPSUB"Textures\\" // empty
+#else
+#define IMPFBX IMPBASE"unityMikuVer2.fbx"
+#define IMPSUB IMPBASE"UnityMikuVer2\\"
+#define IMPSHADER IMPSUB"Shader\\" // empty
+#define IMPMATERIALS IMPSUB"Materials\\" // .asset
+#define IMPTEXTURES IMPSUB"Textures\\" // empty
+#endif
+#endif
 
 const char *typeNames[] = {
   "eUnknown", "eNull", "eMarker", "eSkeleton", "eMesh", "eNurbs",

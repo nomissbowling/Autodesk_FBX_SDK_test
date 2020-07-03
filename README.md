@@ -30,10 +30,22 @@ Autodesk FBX SDK
 - [https://www.autodesk.com/developer-network/platform-technologies/fbx-sdk-2020-0](https://www.autodesk.com/developer-network/platform-technologies/fbx-sdk-2020-0)
 
 
+MikuMikuDance
+-------------
+
+- [https://w.atwiki.jp/vpvpwiki/pages/187.html](https://w.atwiki.jp/vpvpwiki/pages/187.html)
+- [https://mmd-for-unity-proj.github.io/mmd-for-unity/howto.html](https://mmd-for-unity-proj.github.io/mmd-for-unity/howto.html)
+- [https://github.com/mmd-for-unity-proj/mmd-for-unity](https://github.com/mmd-for-unity-proj/mmd-for-unity)
+- [https://baba-s.hatenablog.com/entry/2018/04/11/085500](https://baba-s.hatenablog.com/entry/2018/04/11/085500)
+- [https://github.com/KellanHiggins/UnityFBXExporter](https://github.com/KellanHiggins/UnityFBXExporter)
+- [https://note.com/nomissbowling/n/nceb170032475](https://note.com/nomissbowling/n/nceb170032475)
+
+
 Unity-chan
 ----------
 
 - [http://unity-chan.com/](http://unity-chan.com/)
+- [https://note.com/nomissbowling/n/n139c84f8d6fc](https://note.com/nomissbowling/n/n139c84f8d6fc)
 
 
 Unity project: Assets - Import Package - Custom Package
@@ -63,4 +75,5 @@ Springhead_test
 ---------------
 
 - [Springhead_test](https://github.com/nomissbowling/Springhead_test)
+- [Springhead](https://github.com/sprphys/Springhead)
 
