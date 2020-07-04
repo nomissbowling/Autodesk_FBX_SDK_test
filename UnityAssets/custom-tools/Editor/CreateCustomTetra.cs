@@ -8,17 +8,48 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class CreateCustomTetra : MonoBehaviour {
-  //public Vector3 scl = new Vector3(1.0f, 1.0f, 1.0f);
-  //public Color color = new Color(0.9f, 0.7f, 0.2f, 1.0f);
-  //public PhysicMaterial physicMaterial;
-  //public bool convex = true;
-  //public bool useGravity = false;
+public class CreateCustomTetra : EditorWindow {
+  public string objname = "CustomTetra_New";
+  public Vector3 pos = new Vector3(0.0f, 0.0f, 0.0f);
+  public Vector3 rot = new Vector3(0.0f, 0.0f, 0.0f);
+  public Vector3 scl = new Vector3(1.0f, 1.0f, 1.0f);
+  public Color color = new Color(0.9f, 0.7f, 0.2f, 1.0f);
+  public PhysicMaterial physicMaterial; // None
+  public bool convex = true;
+  public bool useGravity = false;
   static string meshfile = "Assets/custom-tools/Mesh/CustomTetra.asset";
 
+/*
   [MenuItem("CustomTools/CreateCustomTetra")]
-  static void Create(){
-    GameObject o = new GameObject("CustomTetra_New");
+  static void Init(){
+    EditorWindow w = GetWindow(typeof(CreateCustomTetra));
+    w.Show();
+  }
+*/
+
+  [MenuItem("CustomTools/CreateCustomTetra")]
+  static void Open(){
+    EditorWindow.GetWindow<CreateCustomTetra>("CustomTetra");
+  }
+
+  private void OnGUI(){
+    GUILayout.Label("Set parameters and Create it.");
+    objname = EditorGUILayout.TextField("Object Name: ", objname);
+    pos = EditorGUILayout.Vector3Field("Position: ", pos);
+    rot = EditorGUILayout.Vector3Field("Rotation: ", rot);
+    scl = EditorGUILayout.Vector3Field("Scale: ", scl);
+    color = EditorGUILayout.ColorField("Color: ", color);
+    physicMaterial = (PhysicMaterial)EditorGUILayout.ObjectField("Material: ",
+      physicMaterial, typeof(PhysicMaterial));
+    convex = EditorGUILayout.Toggle("Convex Mesh: ", convex);
+    useGravity = EditorGUILayout.Toggle("Use Gravity: ", useGravity);
+    if(GUILayout.Button("Create")){
+      create();
+    }
+  }
+
+  private void create(){
+    GameObject o = new GameObject(objname);
     MeshFilter meshFilter = o.AddComponent<MeshFilter>();
     MeshRenderer meshRenderer = o.AddComponent<MeshRenderer>();
     MeshCollider meshCollider = o.AddComponent<MeshCollider>();
@@ -60,12 +91,14 @@ public class CreateCustomTetra : MonoBehaviour {
     meshFilter.sharedMesh = m;
     m.RecalculateBounds();
     Material mat = new Material(Shader.Find("Specular"));
-    mat.color = new Color(0.9f, 0.7f, 0.2f, 1.0f); // color;
+    mat.color = color;
     meshRenderer.material = mat;
     meshCollider.sharedMesh = m;
-    meshCollider.convex = true; // convex;
-    //meshCollider.material = physicMaterial;
-    rigidBody.useGravity = false; // useGravity;
-    //o.transform.localScale = scl;
+    meshCollider.convex = convex;
+    meshCollider.material = physicMaterial;
+    rigidBody.useGravity = useGravity;
+    o.transform.localScale = scl;
+    o.transform.rotation = Quaternion.Euler(rot);
+    o.transform.position = pos;
   }
 }
