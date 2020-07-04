@@ -1,0 +1,5 @@
+Loading: [unitySphere.fbx]
+   0[RootNode](0)
+    0[Sphere](1:eMesh) MeshName[]
+        768 polygons,   2304 vertices
+done.

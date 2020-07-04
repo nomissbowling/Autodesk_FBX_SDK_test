@@ -1,0 +1,5 @@
+Loading: [unityCustomTetra.fbx]
+   0[RootNode](0)
+    0[CustomTetra](1:eMesh) MeshName[]
+          4 polygons,     12 vertices
+done.

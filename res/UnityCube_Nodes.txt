@@ -1,0 +1,5 @@
+Loading: [unityCube.fbx]
+   0[RootNode](0)
+    0[Cube](1:eMesh) MeshName[]
+         12 polygons,     36 vertices
+done.
