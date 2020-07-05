@@ -30,6 +30,18 @@ Autodesk FBX SDK
 - [https://www.autodesk.com/developer-network/platform-technologies/fbx-sdk-2020-0](https://www.autodesk.com/developer-network/platform-technologies/fbx-sdk-2020-0)
 
 
+Nema Ui
+-------
+
+- [https://okinawaclub.fanbox.cc/posts/610208](https://okinawaclub.fanbox.cc/posts/610208)
+
+
+Kizuna AI
+---------
+
+- [https://kizunaai.com/download/](https://kizunaai.com/download/)
+
+
 MikuMikuDance
 -------------
 
