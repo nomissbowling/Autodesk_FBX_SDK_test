@@ -33,16 +33,16 @@ public class CreateCustomTetra : EditorWindow {
   }
 
   private void OnGUI(){
-    GUILayout.Label("Set parameters and Create it.");
-    objname = EditorGUILayout.TextField("Object Name: ", objname);
-    pos = EditorGUILayout.Vector3Field("Position: ", pos);
-    rot = EditorGUILayout.Vector3Field("Rotation: ", rot);
-    scl = EditorGUILayout.Vector3Field("Scale: ", scl);
-    color = EditorGUILayout.ColorField("Color: ", color);
-    physicMaterial = (PhysicMaterial)EditorGUILayout.ObjectField("Material: ",
+    GUILayout.Label("Set parameters and Create it.", EditorStyles.boldLabel);
+    objname = EditorGUILayout.TextField("Object Name", objname);
+    pos = EditorGUILayout.Vector3Field("Position", pos);
+    rot = EditorGUILayout.Vector3Field("Rotation", rot);
+    scl = EditorGUILayout.Vector3Field("Scale", scl);
+    color = EditorGUILayout.ColorField("Color", color);
+    physicMaterial = (PhysicMaterial)EditorGUILayout.ObjectField("Material",
       physicMaterial, typeof(PhysicMaterial));
-    convex = EditorGUILayout.Toggle("Convex Mesh: ", convex);
-    useGravity = EditorGUILayout.Toggle("Use Gravity: ", useGravity);
+    convex = EditorGUILayout.Toggle("Convex Mesh", convex);
+    useGravity = EditorGUILayout.Toggle("Use Gravity", useGravity);
     if(GUILayout.Button("Create")){
       create();
     }
@@ -50,6 +50,7 @@ public class CreateCustomTetra : EditorWindow {
 
   private void create(){
     GameObject o = new GameObject(objname);
+    Undo.RegisterCreatedObjectUndo(o, "Created CustomTetra");
     MeshFilter meshFilter = o.AddComponent<MeshFilter>();
     MeshRenderer meshRenderer = o.AddComponent<MeshRenderer>();
     MeshCollider meshCollider = o.AddComponent<MeshCollider>();
@@ -100,5 +101,6 @@ public class CreateCustomTetra : EditorWindow {
     o.transform.localScale = scl;
     o.transform.rotation = Quaternion.Euler(rot);
     o.transform.position = pos;
+    o.AddComponent<CustomTetra>();
   }
 }
