@@ -8,7 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class CustomTetra : MonoBehaviour {
-  [SerializeField]
+  [SerializeField, HideInInspector]
   private float scaling = 1.0f;
 
   public void Analyze(){
