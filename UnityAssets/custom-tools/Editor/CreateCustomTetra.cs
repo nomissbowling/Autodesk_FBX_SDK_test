@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 public class CreateCustomTetra : EditorWindow {
   public string objname = "CustomTetra_New";
@@ -18,6 +19,7 @@ public class CreateCustomTetra : EditorWindow {
   public bool convex = true;
   public bool useGravity = false;
   static string meshfile = "Assets/custom-tools/Mesh/CustomTetra.asset";
+  static string texfile = "Assets/custom-tools/Textures/hex_256x256.png";
 
 /*
   [MenuItem("CustomTools/CreateCustomTetra")]
@@ -94,6 +96,20 @@ public class CreateCustomTetra : EditorWindow {
     m.RecalculateBounds();
     Material mat = new Material(Shader.Find("Specular"));
     mat.color = color;
+    string fullpath = Application.dataPath + "/../" + texfile;
+    FileStream fs = new FileStream(fullpath, FileMode.Open, FileAccess.Read);
+    BinaryReader br = new BinaryReader(fs);
+    byte[] dat = br.ReadBytes((int)br.BaseStream.Length);
+    br.Close();
+    fs.Close();
+    int s = 16, w = 0, h = 0;
+    for(int i = 0; i < 4; ++i) w = w * 256 + dat[s++];
+    for(int i = 0; i < 4; ++i) h = h * 256 + dat[s++];
+    Texture2D tex = new Texture2D(w, h);
+    tex.LoadImage(dat);
+    mat.mainTexture = tex;
+    mat.mainTextureScale = new Vector2(2, 2);
+    mat.mainTextureOffset = new Vector2(0, 0);
     meshRenderer.material = mat;
     meshCollider.sharedMesh = m;
     meshCollider.convex = convex;

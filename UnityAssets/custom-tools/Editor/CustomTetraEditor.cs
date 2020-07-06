@@ -62,7 +62,8 @@ public class CustomTetraEditor : Editor {
     Vector3 cap = p * 2; // p + t.velocity;
     Handles.color = Color.magenta;
     Handles.DrawLine(p, cap);
-    Quaternion rot = Quaternion.LookRotation(cap - p); // Quaternion.identity; // Quaternion.LookRotation(t.velocity);
+    Vector3 v = cap - p; // t.velocity;
+    Quaternion rot = v == Vector3.zero ? Quaternion.identity : Quaternion.LookRotation(v);
     float sz = HandleUtility.GetHandleSize(cap);
     Handles.ArrowCap(0, cap, rot, sz);
   }
