@@ -29,7 +29,7 @@ public class CreateCustomTetra : EditorWindow {
 
   [MenuItem("CustomTools/CreateCustomTetra")]
   static void Open(){
-    EditorWindow.GetWindow<CreateCustomTetra>("CustomTetra");
+    EditorWindow.GetWindow<CreateCustomTetra>(true, "CustomTetra"); // true: floating window only, false: dockable
   }
 
   private void OnGUI(){
