@@ -56,6 +56,17 @@ public class CustomTetraEditor : Editor {
     serializedObject.ApplyModifiedProperties();
   }
 
+  public void OnSceneGUI(){
+    CustomTetra t = target as CustomTetra;
+    Vector3 p = t.transform.position;
+    Vector3 cap = p * 2; // p + t.velocity;
+    Handles.color = Color.magenta;
+    Handles.DrawLine(p, cap);
+    Quaternion rot = Quaternion.LookRotation(cap - p); // Quaternion.identity; // Quaternion.LookRotation(t.velocity);
+    float sz = HandleUtility.GetHandleSize(cap);
+    Handles.ArrowCap(0, cap, rot, sz);
+  }
+
   public void Msg(string s){
     Debug.Log(s);
   }
