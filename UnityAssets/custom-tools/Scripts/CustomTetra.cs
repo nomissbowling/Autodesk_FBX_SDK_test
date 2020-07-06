@@ -8,7 +8,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class CustomTetra : MonoBehaviour {
-  public float scaling = 1.0f;
+  [SerializeField]
+  private float scaling = 1.0f;
 
   public void Analyze(){
     Mesh mesh = gameObject.GetComponent<MeshFilter>().sharedMesh;
