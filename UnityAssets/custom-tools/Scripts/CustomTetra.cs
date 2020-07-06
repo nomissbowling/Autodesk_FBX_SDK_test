@@ -27,7 +27,7 @@ public class CustomTetra : MonoBehaviour {
     uv[1] = new Vector2(0.0f, 0.5f);
     uv[2] = new Vector2(0.0f, 1.0f);
     uv[3] = new Vector2(0.5f, 0.5f);
-    meshFilter.mesh.uv = uv;
+    meshFilter.sharedMesh.uv = uv;
   }
 
   void Start(){

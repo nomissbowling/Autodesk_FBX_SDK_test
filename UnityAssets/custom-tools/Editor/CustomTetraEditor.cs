@@ -14,9 +14,14 @@ public class CustomTetraEditor : Editor {
   SerializedProperty scalingProp;
 
   private void OnEnable(){
-    CustomTetra t = target as CustomTetra;
-    posy = t.transform.position.y;
-    scalingProp = serializedObject.FindProperty("scaling");
+    try{
+      CustomTetra t = target as CustomTetra;
+      posy = t.transform.position.y;
+      scalingProp = serializedObject.FindProperty("scaling");
+    }catch(System.NullReferenceException e){ // target
+    }catch(System.IndexOutOfRangeException e){ // target
+    }finally{
+    }
   }
 
   public override void OnInspectorGUI(){
@@ -49,5 +54,9 @@ public class CustomTetraEditor : Editor {
       t.ChangeUV();
     }
     serializedObject.ApplyModifiedProperties();
+  }
+
+  public void Msg(string s){
+    Debug.Log(s);
   }
 }

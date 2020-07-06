@@ -51,6 +51,7 @@ public class CreateCustomTetra : EditorWindow {
   private void create(){
     GameObject o = new GameObject(objname);
     Undo.RegisterCreatedObjectUndo(o, "Created CustomTetra");
+    o.AddComponent<CustomTetra>();
     MeshFilter meshFilter = o.AddComponent<MeshFilter>();
     MeshRenderer meshRenderer = o.AddComponent<MeshRenderer>();
     MeshCollider meshCollider = o.AddComponent<MeshCollider>();
@@ -101,6 +102,7 @@ public class CreateCustomTetra : EditorWindow {
     o.transform.localScale = scl;
     o.transform.rotation = Quaternion.Euler(rot);
     o.transform.position = pos;
-    o.AddComponent<CustomTetra>();
+    CustomTetraEditor ed = ScriptableObject.CreateInstance<CustomTetraEditor>();
+    ed.Msg("test");
   }
 }
