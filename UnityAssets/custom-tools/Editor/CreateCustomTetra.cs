@@ -21,6 +21,7 @@ public class CreateCustomTetra : EditorWindow {
   public Texture2D texture;
   static string meshfile = "Assets/custom-tools/Mesh/CustomTetra.asset";
   static string texfile = "Assets/custom-tools/Textures/hex_256x256.png";
+  static string texname = "lbrbrtlt_256x256";
 
 /*
   [MenuItem("CustomTools/CreateCustomTetra")]
@@ -98,9 +99,11 @@ public class CreateCustomTetra : EditorWindow {
     m.RecalculateBounds();
     Material mat = new Material(Shader.Find("Specular"));
     mat.color = color;
-    mat.mainTexture = texture; // loadTexture(texfile); // loadTexture not link
-    // mat.mainTexture = Resources.Load("Textures/" + texname, typeof(Texture2D)) as Texture2D; // texname from Assets/Resources/Textures (check Read/Write Enabled)
-    // Texture2D textures = Resources.LoadAll("Textures");
+    // mat.mainTexture = texture; // OK link to selected
+    // mat.mainTexture = loadTexture(texfile); // OK but loadTexture not link
+    mat.mainTexture = Resources.Load("Textures/" + texname, typeof(Texture2D)) as Texture2D; // texname from Assets/custom-tools/Resources/Textures (check Read/Write Enabled) OK link
+    // Texture2D[] textures = Resources.LoadAll("Textures", typeof(Texture2D)) as Texture2D[]; // NullReferenceException
+    // mat.mainTexture = textures[0];
     mat.mainTextureScale = new Vector2(2, 2);
     mat.mainTextureOffset = new Vector2(0, 0);
     meshRenderer.material = mat;
