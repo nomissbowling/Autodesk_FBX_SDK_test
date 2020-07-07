@@ -101,9 +101,9 @@ public class CreateCustomTetra : EditorWindow {
     mat.color = color;
     // mat.mainTexture = texture; // OK link to selected
     // mat.mainTexture = loadTexture(texfile); // OK but loadTexture not link
-    mat.mainTexture = Resources.Load("Textures/" + texname, typeof(Texture2D)) as Texture2D; // texname from Assets/custom-tools/Resources/Textures (check Read/Write Enabled) OK link
-    // Texture2D[] textures = Resources.LoadAll("Textures", typeof(Texture2D)) as Texture2D[]; // NullReferenceException
-    // mat.mainTexture = textures[0];
+    // mat.mainTexture = Resources.Load<Texture2D>("Textures/" + texname); // texname from Assets/custom-tools/Resources/Textures (check Read/Write Enabled) OK link
+    Texture2D[] textures = Resources.LoadAll<Texture2D>("Textures"); // OK link
+    mat.mainTexture = textures[0];
     mat.mainTextureScale = new Vector2(2, 2);
     mat.mainTextureOffset = new Vector2(0, 0);
     meshRenderer.material = mat;
