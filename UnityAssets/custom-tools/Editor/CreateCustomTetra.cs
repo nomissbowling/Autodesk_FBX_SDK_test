@@ -18,6 +18,7 @@ public class CreateCustomTetra : EditorWindow {
   public PhysicMaterial physicMaterial; // None
   public bool convex = true;
   public bool useGravity = false;
+  public Texture2D texture;
   static string meshfile = "Assets/custom-tools/Mesh/CustomTetra.asset";
   static string texfile = "Assets/custom-tools/Textures/hex_256x256.png";
 
@@ -45,6 +46,7 @@ public class CreateCustomTetra : EditorWindow {
       physicMaterial, typeof(PhysicMaterial));
     convex = EditorGUILayout.Toggle("Convex Mesh", convex);
     useGravity = EditorGUILayout.Toggle("Use Gravity", useGravity);
+    texture = (Texture2D)EditorGUILayout.ObjectField("Texture", texture, typeof(Texture2D), false);
     if(GUILayout.Button("Create")){
       create();
     }
@@ -96,18 +98,7 @@ public class CreateCustomTetra : EditorWindow {
     m.RecalculateBounds();
     Material mat = new Material(Shader.Find("Specular"));
     mat.color = color;
-    string fullpath = Application.dataPath + "/../" + texfile;
-    FileStream fs = new FileStream(fullpath, FileMode.Open, FileAccess.Read);
-    BinaryReader br = new BinaryReader(fs);
-    byte[] dat = br.ReadBytes((int)br.BaseStream.Length);
-    br.Close();
-    fs.Close();
-    int s = 16, w = 0, h = 0;
-    for(int i = 0; i < 4; ++i) w = w * 256 + dat[s++];
-    for(int i = 0; i < 4; ++i) h = h * 256 + dat[s++];
-    Texture2D tex = new Texture2D(w, h);
-    tex.LoadImage(dat);
-    mat.mainTexture = tex;
+    mat.mainTexture = texture; // loadTexture(texfile); // loadTexture not link
     mat.mainTextureScale = new Vector2(2, 2);
     mat.mainTextureOffset = new Vector2(0, 0);
     meshRenderer.material = mat;
@@ -120,5 +111,20 @@ public class CreateCustomTetra : EditorWindow {
     o.transform.position = pos;
     CustomTetraEditor ed = ScriptableObject.CreateInstance<CustomTetraEditor>();
     ed.Msg("test");
+  }
+
+  public Texture2D loadTexture(string tfn){
+    string fullpath = Application.dataPath + "/../" + tfn;
+    FileStream fs = new FileStream(fullpath, FileMode.Open, FileAccess.Read);
+    BinaryReader br = new BinaryReader(fs);
+    byte[] dat = br.ReadBytes((int)br.BaseStream.Length);
+    br.Close();
+    fs.Close();
+    int s = 16, w = 0, h = 0;
+    for(int i = 0; i < 4; ++i) w = w * 256 + dat[s++];
+    for(int i = 0; i < 4; ++i) h = h * 256 + dat[s++];
+    Texture2D tex = new Texture2D(w, h);
+    tex.LoadImage(dat);
+    return tex;
   }
 }
