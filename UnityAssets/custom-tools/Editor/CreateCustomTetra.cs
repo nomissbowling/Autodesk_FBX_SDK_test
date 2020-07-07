@@ -99,6 +99,8 @@ public class CreateCustomTetra : EditorWindow {
     Material mat = new Material(Shader.Find("Specular"));
     mat.color = color;
     mat.mainTexture = texture; // loadTexture(texfile); // loadTexture not link
+    // mat.mainTexture = Resources.Load("Textures/" + texname, typeof(Texture2D)) as Texture2D; // texname from Assets/Resources/Textures (check Read/Write Enabled)
+    // Texture2D textures = Resources.LoadAll("Textures");
     mat.mainTextureScale = new Vector2(2, 2);
     mat.mainTextureOffset = new Vector2(0, 0);
     meshRenderer.material = mat;
