@@ -12,12 +12,18 @@ using System.Collections.Generic;
 public class CustomTetraEditor : Editor {
   public float posy = 0.0f; // not CustomTetra object's member
   SerializedProperty scalingProp;
+  SerializedProperty textureProp;
+  SerializedProperty texSzProp;
+  SerializedProperty texPosProp;
 
   private void OnEnable(){
     try{
       CustomTetra t = target as CustomTetra;
       posy = t.transform.position.y;
       scalingProp = serializedObject.FindProperty("scaling");
+      textureProp = serializedObject.FindProperty("texture");
+      texSzProp = serializedObject.FindProperty("texSz");
+      texPosProp = serializedObject.FindProperty("texPos");
     }catch(System.NullReferenceException e){ // target
     }catch(System.IndexOutOfRangeException e){ // target
     }finally{
@@ -29,6 +35,19 @@ public class CustomTetraEditor : Editor {
     serializedObject.Update();
     EditorGUI.BeginChangeCheck();
     DrawDefaultInspector();
+    EditorGUILayout.BeginHorizontal(GUI.skin.box);
+    GUILayout.Box(GUIContent.none, GUILayout.Width(48), GUILayout.Height(48));
+    Texture2D tex = textureProp.objectReferenceValue as Texture2D;
+    if(tex != null){
+      Rect rct = new Rect(texPosProp.vector2Value, texSzProp.vector2Value);
+      GUI.DrawTextureWithTexCoords(GUILayoutUtility.GetLastRect(), tex, rct);
+    }
+    EditorGUILayout.BeginVertical();
+    EditorGUILayout.PropertyField(textureProp);
+    EditorGUILayout.PropertyField(texSzProp);
+    EditorGUILayout.PropertyField(texPosProp);
+    EditorGUILayout.EndVertical();
+    EditorGUILayout.EndHorizontal();
 //    EditorGUILayout.PropertyField(scalingProp);
     EditorGUILayout.Slider(scalingProp, 0.1f, 10.0f);
     posy = EditorGUILayout.Slider("PosY", posy, -8.0f, 5.0f);
