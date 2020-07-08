@@ -69,10 +69,10 @@ public class CreateCustomTetra : EditorWindow {
         new Vector3(0.0f, 1.0f, 0.0f),
         new Vector3(0.0f, 0.0f, 1.0f)};
       Vector2[] uv = new Vector2[]{
-        new Vector2(1.0f, 1.0f),
-        new Vector2(0.0f, 0.0f),
-        new Vector2(0.0f, 1.0f),
-        new Vector2(1.0f, 0.0f)};
+        new Vector2(0.5f, 0.433f),
+        new Vector2(1.0f, 0.0f),
+        new Vector2(0.5f, 0.866f),
+        new Vector2(0.0f, 0.0f)};
       Color[] colors = new Color[]{
         new Color(1.0f, 1.0f, 1.0f, 1.0f),
         new Color(1.0f, 0.0f, 0.0f, 1.0f),

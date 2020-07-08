@@ -30,10 +30,10 @@ public class CustomTetra : MonoBehaviour {
   public void ChangeUV(){
     MeshFilter meshFilter = gameObject.GetComponent<MeshFilter>();
     Vector2[] uv = new Vector2[4];
-    uv[0] = new Vector2(0.5f, 0.5f);
-    uv[1] = new Vector2(0.0f, 0.0f);
-    uv[2] = new Vector2(0.0f, 0.5f);
-    uv[3] = new Vector2(0.5f, 0.0f);
+    uv[0] = new Vector2(0.25f, 0.216f);
+    uv[1] = new Vector2(0.5f, 0.0f);
+    uv[2] = new Vector2(0.25f, 0.433f);
+    uv[3] = new Vector2(0.0f, 0.0f);
     meshFilter.sharedMesh.uv = uv;
   }
 
