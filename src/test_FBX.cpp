@@ -49,14 +49,16 @@
 #endif
 #else
 #if 1
-#define IMPFBX IMPBASE"unityExportSphere.fbx"
-#define IMPSUB IMPBASE"UnityExportSphere\\" // empty
+//#define IMPFBX IMPBASE"unityExportSphere.fbx"
+//#define IMPSUB IMPBASE"UnityExportSphere\\" // empty
 //#define IMPFBX IMPBASE"unitySphere.fbx"
 //#define IMPSUB IMPBASE"UnitySphere\\" // empty
 //#define IMPFBX IMPBASE"unityCube.fbx"
 //#define IMPSUB IMPBASE"UnityCube\\" // empty
 //#define IMPFBX IMPBASE"unityCustomTetra.fbx"
 //#define IMPSUB IMPBASE"UnityCustomTetra\\" // empty
+#define IMPFBX IMPBASE"unityCustomTetraWithTexture.fbx"
+#define IMPSUB IMPBASE"UnityCustomTetraWithTexture\\" // empty
 #define IMPSHADER IMPSUB"Shader\\" // empty
 #define IMPMATERIALS IMPSUB"Materials\\" // empty
 #define IMPTEXTURES IMPSUB"Textures\\" // empty
