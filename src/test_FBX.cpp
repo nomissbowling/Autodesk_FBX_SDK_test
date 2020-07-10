@@ -235,16 +235,14 @@ int main(int ac, char **av)
     meshIndices[name] = std::vector<int>{};
     meshIndices[name].reserve(cnt * 3);
     for(int i = 0; i < cnt; ++i){
-      meshIndices[name].push_back(mesh->GetPolygonVertex(i, 0)); // ccw
-      meshIndices[name].push_back(mesh->GetPolygonVertex(i, 2)); // ccw
-      meshIndices[name].push_back(mesh->GetPolygonVertex(i, 1)); // ccw
+      for(int j = 0; j < mesh->GetPolygonSize(i); ++j)
+        meshIndices[name].push_back(mesh->GetPolygonVertex(i, j));
     }
     meshVertices[name] = std::vector<FbxVector4>{};
 #if 1 // ccw
     meshVertices[name].reserve(meshIndices[name].size());
     for(auto idx: meshIndices[name]){
       FbxVector4 vertex = mesh->GetControlPointAt(idx);
-      vertex[0] *= -1;
       assert(vertex[3] == 0.0);
       meshVertices[name].push_back(vertex);
       fprintf(stdout, "%d: %f, %f, %f\n", idx, vertex[0], vertex[1], vertex[2]);
@@ -254,35 +252,23 @@ int main(int ac, char **av)
     int *indices = mesh->GetPolygonVertices();
     int vcnt = mesh->GetPolygonVertexCount();
     meshVertices[name].reserve(vcnt);
-    for(int i = 0, j = 0; i < vcnt; ++j){ // increment j
+    for(int i = 0; i < vcnt; ++i){
       int idx = indices[i];
       FbxVector4 vertex = vertices[idx];
-      vertex[0] *= -1;
       assert(vertex[3] == 0.0);
       meshVertices[name].push_back(vertex);
       fprintf(stdout, "%d: %f, %f, %f\n", idx, vertex[0], vertex[1], vertex[2]);
-      switch(j){ // ccw
-      case 0: i += 2; break;
-      case 1: --i; break;
-      case 2: i += 2; j = -1; break;
-      }
     }
 #endif
     FbxArray<FbxVector4> normals;
     mesh->GetPolygonVertexNormals(normals);
     meshNormals[name] = std::vector<FbxVector4>{};
     meshNormals[name].reserve(normals.Size());
-    for(int i = 0, j = 0; i < normals.Size(); ++j){ // increment j
+    for(int i = 0; i < normals.Size(); ++i){
       FbxVector4 norm = normals[i];
-      norm[0] *= -1;
       assert(norm[3] == 0.0);
       meshNormals[name].push_back(norm);
       fprintf(stdout, "%d: %f, %f, %f\n", i, norm[0], norm[1], norm[2]);
-      switch(j){ // ccw
-      case 0: i += 2; break;
-      case 1: --i; break;
-      case 2: i += 2; j = -1; break;
-      }
     }
   }
   manager->Destroy();
