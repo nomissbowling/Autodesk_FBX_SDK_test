@@ -33,6 +33,7 @@
 #include <map>
 #include <unordered_map>
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -243,7 +244,7 @@ int main(int ac, char **av)
     for(auto idx: meshIndices[name]){
       FbxVector4 vertex = mesh->GetControlPointAt(idx);
       vertex[0] *= -1;
-      // vertex[3] = 0.0;
+      assert(vertex[3] == 0.0);
       meshVertices[name].push_back(vertex);
       fprintf(stdout, "%d: %f, %f, %f\n", idx, vertex[0], vertex[1], vertex[2]);
     }
@@ -258,7 +259,7 @@ int main(int ac, char **av)
       vertex[0] = -vertices[idx][0];
       vertex[1] = vertices[idx][1];
       vertex[2] = vertices[idx][2];
-      // vertex[3] = 0.0;
+      assert(vertex[3] == 0.0);
       meshVertices[name].push_back(vertex);
       fprintf(stdout, "%d: %f, %f, %f\n", idx, vertex[0], vertex[1], vertex[2]);
     }
