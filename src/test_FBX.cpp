@@ -239,7 +239,7 @@ int main(int ac, char **av)
       meshIndices[name].push_back(mesh->GetPolygonVertex(i, 1)); // ccw
     }
     meshVertices[name] = std::vector<FbxVector4>{};
-#if 1
+#if 1 // ccw
     meshVertices[name].reserve(meshIndices[name].size());
     for(auto idx: meshIndices[name]){
       FbxVector4 vertex = mesh->GetControlPointAt(idx);
@@ -248,17 +248,15 @@ int main(int ac, char **av)
       meshVertices[name].push_back(vertex);
       fprintf(stdout, "%d: %f, %f, %f\n", idx, vertex[0], vertex[1], vertex[2]);
     }
-#else
+#else // cw
     FbxVector4 *vertices = mesh->GetControlPoints();
     int *indices = mesh->GetPolygonVertices();
     int vcnt = mesh->GetPolygonVertexCount();
     meshVertices[name].reserve(vcnt);
     for(int i = 0; i < vcnt; ++i){
-      FbxVector4 vertex;
       int idx = indices[i];
-      vertex[0] = -vertices[idx][0];
-      vertex[1] = vertices[idx][1];
-      vertex[2] = vertices[idx][2];
+      FbxVector4 vertex = vertices[idx];
+      vertex[0] *= -1;
       assert(vertex[3] == 0.0);
       meshVertices[name].push_back(vertex);
       fprintf(stdout, "%d: %f, %f, %f\n", idx, vertex[0], vertex[1], vertex[2]);
