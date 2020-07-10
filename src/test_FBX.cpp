@@ -27,7 +27,11 @@
   https://qiita.com/kota017a/items/dd0fab59c06ca72dd3f6
 */
 
+#include <array>
+#include <vector>
+#include <tuple>
 #include <map>
+#include <unordered_map>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -200,6 +204,8 @@ int main(int ac, char **av)
   fprintf(stdout, "sizeof(size_t): %zd\n", sizeof(size_t));
 
   std::map<std::string, FbxNode *> meshMap;
+  std::map<std::string, std::vector<int> > meshIndices;
+  std::map<std::string, std::vector<FbxVector4> > meshVertices;
   FbxManager *manager = FbxManager::Create();
   FbxIOSettings *iosettings = FbxIOSettings::Create(manager, IOSROOT);
   manager->SetIOSettings(iosettings);
@@ -219,8 +225,45 @@ int main(int ac, char **av)
     else GetNodeAndAttributes(meshMap, root, 0, 0);
   }
   fprintf(stdout, "%zd meshes\n", meshMap.size());
-  for(auto it = meshMap.begin(); it != meshMap.end(); ++it)
-    fprintf(stdout, "%s: [%s]\n", it->first.c_str(), it->second->GetMesh()->GetName());
+  for(auto it = meshMap.begin(); it != meshMap.end(); ++it){
+    const std::string &name = it->first;
+    FbxMesh *mesh = it->second->GetMesh();
+    int cnt = mesh->GetPolygonCount();
+    fprintf(stdout, "%s: [%s], %d\n", name.c_str(), mesh->GetName(), cnt);
+    meshIndices[name] = std::vector<int>{};
+    meshIndices[name].reserve(cnt * 3);
+    for(int i = 0; i < cnt; ++i){
+      meshIndices[name].push_back(mesh->GetPolygonVertex(i, 0)); // ccw
+      meshIndices[name].push_back(mesh->GetPolygonVertex(i, 2)); // ccw
+      meshIndices[name].push_back(mesh->GetPolygonVertex(i, 1)); // ccw
+    }
+    meshVertices[name] = std::vector<FbxVector4>{};
+#if 1
+    meshVertices[name].reserve(meshIndices[name].size());
+    for(auto idx: meshIndices[name]){
+      FbxVector4 vertex = mesh->GetControlPointAt(idx);
+      vertex[0] *= -1;
+      // vertex[3] = 0.0;
+      meshVertices[name].push_back(vertex);
+      fprintf(stdout, "%d: %f, %f, %f\n", idx, vertex[0], vertex[1], vertex[2]);
+    }
+#else
+    FbxVector4 *vertices = mesh->GetControlPoints();
+    int *indices = mesh->GetPolygonVertices();
+    int vcnt = mesh->GetPolygonVertexCount();
+    meshVertices[name].reserve(vcnt);
+    for(int i = 0; i < vcnt; ++i){
+      FbxVector4 vertex;
+      int idx = indices[i];
+      vertex[0] = -vertices[idx][0];
+      vertex[1] = vertices[idx][1];
+      vertex[2] = vertices[idx][2];
+      // vertex[3] = 0.0;
+      meshVertices[name].push_back(vertex);
+      fprintf(stdout, "%d: %f, %f, %f\n", idx, vertex[0], vertex[1], vertex[2]);
+    }
+#endif
+  }
   manager->Destroy();
 
   fprintf(stdout, "done.\n");
