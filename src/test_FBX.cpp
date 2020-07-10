@@ -21,10 +21,13 @@
   http://gameprogrammingunit.web.fc2.com/fbx_sdk/material.htm
   http://gameprogrammingunit.web.fc2.com/fbx_sdk/unitychan.htm
   http://whaison.jugem.jp/?eid=713
+  https://megalodon.jp/2014-0623-2325-26/ramemiso.hateblo.jp/entry/2014/06/21/150405
   https://qiita.com/kota017a/items/071c8b085c758c769758
   https://qiita.com/kota017a/items/1cdc347dec9800ae66bd
   https://qiita.com/kota017a/items/dd0fab59c06ca72dd3f6
 */
+
+#include <map>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -87,7 +90,8 @@ void depth(int d)
   fprintf(stdout, fmt, "");
 }
 
-void GetNodeAndAttributes(FbxNode *node, int d, int n)
+void GetNodeAndAttributes(std::map<std::string, FbxNode *> &meshMap,
+  FbxNode *node, int d, int n)
 {
   depth(d);
   fprintf(stdout, "%4d[%s]", n, node->GetName());
@@ -102,8 +106,11 @@ void GetNodeAndAttributes(FbxNode *node, int d, int n)
   }
   fprintf(stdout, "(%d%s)", attrcount, buf);
   FbxMesh *mesh = node->GetMesh();
-  if(mesh) fprintf(stdout, " MeshName[%s]\n", mesh->GetName());
-  else fprintf(stdout, "\n");
+  if(!mesh) fprintf(stdout, "\n");
+  else{
+    fprintf(stdout, " MeshName[%s]\n", mesh->GetName());
+    meshMap[node->GetName()] = node;
+  }
   for(int i = 0; i < attrcount; ++i){
     FbxNodeAttribute *a = node->GetNodeAttributeByIndex(i);
     FbxNodeAttribute::EType t = a->GetAttributeType();
@@ -158,7 +165,7 @@ void GetNodeAndAttributes(FbxNode *node, int d, int n)
     false); // bool pApplyTarget
 #endif
   for(int i = 0; i < node->GetChildCount(); ++i)
-    GetNodeAndAttributes(node->GetChild(i), d + 1, i);
+    GetNodeAndAttributes(meshMap, node->GetChild(i), d + 1, i);
 }
 
 void GetMesh(FbxNodeAttribute *a)
@@ -192,6 +199,7 @@ int main(int ac, char **av)
 {
   fprintf(stdout, "sizeof(size_t): %zd\n", sizeof(size_t));
 
+  std::map<std::string, FbxNode *> meshMap;
   FbxManager *manager = FbxManager::Create();
   FbxIOSettings *iosettings = FbxIOSettings::Create(manager, IOSROOT);
   manager->SetIOSettings(iosettings);
@@ -208,8 +216,11 @@ int main(int ac, char **av)
     geometryConverter.Triangulate(scene, true); // convert all polygons triangle
     FbxNode *root = scene->GetRootNode();
     if(!root) fprintf(stderr, "no root\n");
-    else GetNodeAndAttributes(root, 0, 0);
+    else GetNodeAndAttributes(meshMap, root, 0, 0);
   }
+  fprintf(stdout, "%zd meshes\n", meshMap.size());
+  for(auto it = meshMap.begin(); it != meshMap.end(); ++it)
+    fprintf(stdout, "%s: [%s]\n", it->first.c_str(), it->second->GetMesh()->GetName());
   manager->Destroy();
 
   fprintf(stdout, "done.\n");
