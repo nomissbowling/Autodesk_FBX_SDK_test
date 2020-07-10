@@ -207,6 +207,7 @@ int main(int ac, char **av)
   std::map<std::string, FbxNode *> meshMap;
   std::map<std::string, std::vector<int> > meshIndices;
   std::map<std::string, std::vector<FbxVector4> > meshVertices;
+  std::map<std::string, std::vector<FbxVector4> > meshNormals;
   FbxManager *manager = FbxManager::Create();
   FbxIOSettings *iosettings = FbxIOSettings::Create(manager, IOSROOT);
   manager->SetIOSettings(iosettings);
@@ -248,20 +249,41 @@ int main(int ac, char **av)
       meshVertices[name].push_back(vertex);
       fprintf(stdout, "%d: %f, %f, %f\n", idx, vertex[0], vertex[1], vertex[2]);
     }
-#else // cw
+#else // ccw
     FbxVector4 *vertices = mesh->GetControlPoints();
     int *indices = mesh->GetPolygonVertices();
     int vcnt = mesh->GetPolygonVertexCount();
     meshVertices[name].reserve(vcnt);
-    for(int i = 0; i < vcnt; ++i){
+    for(int i = 0, j = 0; i < vcnt; ++j){ // increment j
       int idx = indices[i];
       FbxVector4 vertex = vertices[idx];
       vertex[0] *= -1;
       assert(vertex[3] == 0.0);
       meshVertices[name].push_back(vertex);
       fprintf(stdout, "%d: %f, %f, %f\n", idx, vertex[0], vertex[1], vertex[2]);
+      switch(j){ // ccw
+      case 0: i += 2; break;
+      case 1: --i; break;
+      case 2: i += 2; j = -1; break;
+      }
     }
 #endif
+    FbxArray<FbxVector4> normals;
+    mesh->GetPolygonVertexNormals(normals);
+    meshNormals[name] = std::vector<FbxVector4>{};
+    meshNormals[name].reserve(normals.Size());
+    for(int i = 0, j = 0; i < normals.Size(); ++j){ // increment j
+      FbxVector4 norm = normals[i];
+      norm[0] *= -1;
+      assert(norm[3] == 0.0);
+      meshNormals[name].push_back(norm);
+      fprintf(stdout, "%d: %f, %f, %f\n", i, norm[0], norm[1], norm[2]);
+      switch(j){ // ccw
+      case 0: i += 2; break;
+      case 1: --i; break;
+      case 2: i += 2; j = -1; break;
+      }
+    }
   }
   manager->Destroy();
 
