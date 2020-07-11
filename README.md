@@ -9,13 +9,18 @@ install memo
 fbx202001_fbxsdk_vs2017_win.exe to '/prj/Autodesk/FBX/FBX SDK/2020.0.1'
 
 include path
+- '../../Autodesk_FBX_SDK_test/include'
+- '../../Springhead/core/include'
 - '../../Autodesk/FBX/FBX SDK/2020.0.1/include'
 
 library path
+- '../../Springhead/generated/lib/win64'
+- '../../Springhead/dependency/lib/win64'
 - '../../Autodesk/FBX/FBX SDK/2020.0.1/lib/vs2017/x64/release'
 
 link library
 - libfbxsdk.lib
+- Springhead15.0x64.lib
 
 platform
 - x64

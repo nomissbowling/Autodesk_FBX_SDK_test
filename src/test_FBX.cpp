@@ -1,6 +1,8 @@
 /*
   test_FBX.cpp
 
+  load FBX and display Mesh with Springhead
+
   http://marupeke296.com/FBX2019_No2_LoadAndTerminate.html
   http://marupeke296.com/FBX2019_No3_node.html
   http://marupeke296.com/FBX_No4_VertexAndPolygon.html (old)
@@ -26,6 +28,9 @@
   https://qiita.com/kota017a/items/1cdc347dec9800ae66bd
   https://qiita.com/kota017a/items/dd0fab59c06ca72dd3f6
 */
+
+#include <Springhead.h>
+#include <Framework/SprFWApp.h>
 
 #include <array>
 #include <vector>
@@ -287,9 +292,188 @@ void GetMesh(MeshInfo &mi, FbxNodeAttribute *a)
 #endif
 }
 
+using namespace Spr;
+
+class MyApp : public FWApp {
+public:
+  bool bDrawInfo;
+public:
+  MyApp();
+  virtual ~MyApp();
+  virtual void Init(int ac=0, char **av=0);
+  virtual void TimerFunc(int id);
+  virtual void Display();
+  virtual void Keyboard(int key, int x, int y);
+};
+
+MyApp::MyApp() : FWApp()
+{
+  bDrawInfo = false;
+}
+
+MyApp::~MyApp()
+{
+}
+
+void MyApp::Init(int ac, char **av)
+{
+  FWApp::Init(ac, av);
+
+  FWWinIf *w = GetWin(0);
+  SetCurrentWin(w);
+  w->SetTitle("Autodesk_FBX_SDK_test");
+  w->SetPosition(120, 80);
+  w->SetSize(800, 600);
+
+  HITrackballIf *tb = w->GetTrackball();
+  // tb->SetPosition(Vec3f(0.0f, 0.0f, 0.0f));
+  tb->SetTarget(Vec3f(0.0f, 0.0f, 0.0f));
+  tb->SetAngle(-3.14f / 4, 3.14f / 4);
+  tb->SetDistance(5.0f);
+  // grRender->SetViewMatrix(tb->GetAffine().inv());
+
+  FWSceneIf *fwScene = GetSdk()->GetScene(0);
+  w->SetScene(fwScene);
+  // fwScene->SetRenderMode(true, false); // solid
+  fwScene->SetRenderMode(false, true); // wire
+  fwScene->EnableRenderAxis(true);
+  fwScene->EnableRenderForce(true);
+  fwScene->EnableRenderContact(true);
+  // fwScene->EnableRenderGrid(true);
+
+  PHSdkIf *phSdk = GetSdk()->GetPHSdk();
+  PHSceneIf *phScene = fwScene->GetPHScene();
+  phScene->SetTimeStep(0.050);
+  phScene->SetContactMode(PHSceneDesc::MODE_LCP);
+
+/*
+  // FWSdk *fwSdk; // already defined (instance of FWApp)
+  GRSdkIf *grSdk = GetSdk()->GetGRSdk();
+  GRSceneIf *grScene = grSdk->GetScene(); // fwSdk->GetScene(0)->GetGRScene();
+  GRFrameIf *frm = grScene->GetWorld();
+  frm->SetTransform(Affinef::Trn(3.0f, 0.0f, 0.0f));
+  GRCameraIf *cam = grScene->GetCamera(); // null
+  GRCameraDesc camd;
+  cam->GetDesc(&camd);
+  camd.front = 3.0f;
+  grScene->SetCamera(camd);
+*/
+
+  CDBoxDesc bd;
+  PHSolidIf *floor = phScene->CreateSolid();
+  floor->SetDynamical(false);
+  floor->SetGravity(false);
+  floor->SetMass(10000.0);
+  bd.boxsize = Vec3f(5.0f, 0.1f, 5.0f);
+  floor->AddShape(phSdk->CreateShape(bd));
+  floor->SetFramePosition(Vec3d(0.0, -1.0, 0.0));
+  fwSdk->GetScene(0)->SetSolidMaterial(GRRenderBaseIf::HOTPINK, floor);
+  fwSdk->GetScene(0)->SetWireMaterial(GRRenderBaseIf::HOTPINK, floor);
+
+  CDShapeIf *shape = floor->GetShape(0);
+  GRMeshDesc meshd;
+  CDBoxIf *box = shape->Cast();
+  Vec3f *vtxs = box->GetVertices();
+  std::vector<Vec3f> vertices = std::vector<Vec3f>(8);
+  for(int i = 0; i < vertices.size(); ++i) vertices[i] = vtxs[i];
+  std::vector<GRMeshFace> faces = std::vector<GRMeshFace>{
+    {4, {7, 4, 0, 3}}, {4, {7, 6, 5, 4}}, {4, {7, 3, 2, 6}},
+    {4, {1, 0, 4, 5}}, {4, {1, 2, 3, 0}}, {4, {1, 5, 6, 2}}};
+
+  std::vector<Vec2f> coords = {{1, 0}, {1, 1}, {0, 1}, {0, 0}};
+  int nv = faces[0].nVertices;
+  int nf = (int)faces.size();
+  meshd.vertices = std::vector<Vec3f>(nv * nf);
+  meshd.faces = std::vector<GRMeshFace>(nf);
+  meshd.texCoords = std::vector<Vec2f>(meshd.vertices.size());
+  for(int i = 0; i < nf; ++i){
+    Vec2f cr = Vec2f(i % 4, 3 - (i / 4));
+    GRMeshFace g = GRMeshFace{nv, {0, 0, 0, 0}};
+    GRMeshFace &f = faces[i];
+    for(int j = 0; j < nv; ++j){
+      g.indices[j] = i * nv + j;
+      meshd.vertices[g.indices[j]] = vertices[f.indices[j]];
+      Vec2f coord = coords[j];
+      meshd.texCoords[g.indices[j]] = (coord + cr) / 4.0f;
+    }
+    meshd.faces[i] = g;
+  }
+
+  Vec4f col = fwSdk->GetRender()->GetReservedColor(GRRenderBaseIf::HOTPINK);
+  meshd.colors = std::vector<Vec4f>(meshd.vertices.size());
+  for(int i = 0; i < meshd.vertices.size(); ++i) meshd.colors[i] = col;
+  GRMaterialDesc matd = GRMaterialDesc(
+    Vec4f(0.8f, 0.8f, 0.8f, 1.0f), // ambient
+    Vec4f(0.6f, 0.6f, 0.6f, 1.0f), // diffuse
+    Vec4f(0.2f, 0.2f, 0.2f, 1.0f), // specular
+    Vec4f(0.5f, 0.5f, 0.5f, 1.0f), // emissive
+    10.0); // power
+  //matd.texname = "...";
+  GRFrameDesc frmd = GRFrameDesc(); // .transform = Affinef();
+
+  GRSceneIf *grScene = fwSdk->GetScene(0)->GetGRScene();
+  GRFrameIf *frm = grScene->CreateVisual(frmd)->Cast(); // parent = world
+  GRMeshIf *mesh = grScene->CreateVisual(meshd, frm)->Cast();
+  GRMaterialIf *mat = grScene->CreateVisual(matd, frm)->Cast();
+  mesh->AddChildObject(mat); // 0 -> meshd.materialList[0]
+  FWObjectIf *fwObj = fwSdk->GetScene(0)->CreateFWObject();
+  fwObj->SetPHSolid(floor);
+  fwObj->SetGRFrame(frm);
+  fwSdk->GetScene(0)->Sync();
+}
+
+void MyApp::TimerFunc(int id)
+{
+  FWApp::TimerFunc(id);
+}
+
+void MyApp::Display()
+{
+  FWSceneIf *fwScene = GetSdk()->GetScene(0);
+  fwScene->EnableRenderAxis(bDrawInfo);
+  fwScene->EnableRenderForce(bDrawInfo);
+  fwScene->EnableRenderContact(bDrawInfo);
+  // fwScene->EnableRenderGrid(bDrawInfo);
+
+  FWApp::Display();
+}
+
+void MyApp::Keyboard(int key, int x, int y)
+{
+//  FWApp::Keyboard(key, x, y);
+
+  switch(key){
+  case 0x1b: // ESC
+  case 'q':
+    FWApp::Clear();
+    exit(0);
+    break;
+  case 'g':
+    GetSdk()->SetDebugMode(false);
+    break;
+  case 'p':
+    GetSdk()->SetDebugMode(true);
+    break;
+  case 'd':
+    bDrawInfo = !bDrawInfo;
+    break;
+  case 's': {
+    FWSceneIf *fwScene = GetSdk()->GetScene(0);
+    fwScene->SetRenderMode(true, false); // solid
+  } break;
+  case 'w': {
+    FWSceneIf *fwScene = GetSdk()->GetScene(0);
+    fwScene->SetRenderMode(false, true); // wire
+  } break;
+  default: break;
+  }
+}
+
 int main(int ac, char **av)
 {
   fprintf(stdout, "sizeof(size_t): %zd\n", sizeof(size_t));
+  MyApp app;
+  app.Init(ac, av);
 
   std::map<std::string, MeshInfo *> meshMap;
   FbxManager *manager = FbxManager::Create();
@@ -332,6 +516,7 @@ int main(int ac, char **av)
   }
   manager->Destroy();
 
+  app.StartMainLoop();
   fprintf(stdout, "done.\n");
   return 0;
 }
