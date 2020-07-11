@@ -296,6 +296,7 @@ using namespace Spr;
 
 class MyApp : public FWApp {
 public:
+  std::map<std::string, MeshInfo *> meshMap;
   bool bDrawInfo;
 public:
   MyApp();
@@ -304,6 +305,7 @@ public:
   virtual void TimerFunc(int id);
   virtual void Display();
   virtual void Keyboard(int key, int x, int y);
+  void DisplayMeshMap(bool flag=true);
 };
 
 MyApp::MyApp() : FWApp()
@@ -469,13 +471,37 @@ void MyApp::Keyboard(int key, int x, int y)
   }
 }
 
+void MyApp::DisplayMeshMap(bool flag)
+{
+  if(flag) fprintf(stdout, "%zd meshes\n", meshMap.size());
+  for(auto it = meshMap.begin(); it != meshMap.end(); ++it){
+    const std::string &name = it->first;
+    MeshInfo *mi = it->second;
+    FbxMesh *m = mi->meshNode->GetMesh();
+    int polynum = m->GetPolygonCount();
+    if(flag) fprintf(stdout, "%s: [%s], %d\n", name.c_str(), m->GetName(), polynum);
+    int *indices = m->GetPolygonVertices();
+    for(int i = 0; i < mi->meshVertices.size(); ++i){
+      FbxVector4 vertex = mi->meshVertices[i];
+      int idx = mi->meshIndices[i];
+      assert(idx == indices[i]);
+      if(flag) fprintf(stdout, "%d: %f, %f, %f\n", idx, vertex[0], vertex[1], vertex[2]);
+    }
+    for(int i = 0; i < mi->meshNormals.size(); ++i){
+      FbxVector4 norm = mi->meshNormals[i];
+      if(flag) fprintf(stdout, "%d: %f, %f, %f\n", i, norm[0], norm[1], norm[2]);
+    }
+    delete mi;
+  }
+  meshMap.clear();
+}
+
 int main(int ac, char **av)
 {
   fprintf(stdout, "sizeof(size_t): %zd\n", sizeof(size_t));
   MyApp app;
   app.Init(ac, av);
 
-  std::map<std::string, MeshInfo *> meshMap;
   FbxManager *manager = FbxManager::Create();
   FbxIOSettings *iosettings = FbxIOSettings::Create(manager, IOSROOT);
   manager->SetIOSettings(iosettings);
@@ -492,28 +518,9 @@ int main(int ac, char **av)
     geometryConverter.Triangulate(scene, true); // convert all polygons triangle
     FbxNode *root = scene->GetRootNode();
     if(!root) fprintf(stderr, "no root\n");
-    else GetNodeAndAttributes(meshMap, root, 0, 0);
+    else GetNodeAndAttributes(app.meshMap, root, 0, 0);
   }
-  fprintf(stdout, "%zd meshes\n", meshMap.size());
-  for(auto it = meshMap.begin(); it != meshMap.end(); ++it){
-    const std::string &name = it->first;
-    MeshInfo *mi = it->second;
-    FbxMesh *m = mi->meshNode->GetMesh();
-    int polynum = m->GetPolygonCount();
-    fprintf(stdout, "%s: [%s], %d\n", name.c_str(), m->GetName(), polynum);
-    int *indices = m->GetPolygonVertices();
-    for(int i = 0; i < mi->meshVertices.size(); ++i){
-      FbxVector4 vertex = mi->meshVertices[i];
-      int idx = mi->meshIndices[i];
-      assert(idx == indices[i]);
-      fprintf(stdout, "%d: %f, %f, %f\n", idx, vertex[0], vertex[1], vertex[2]);
-    }
-    for(int i = 0; i < mi->meshNormals.size(); ++i){
-      FbxVector4 norm = mi->meshNormals[i];
-      fprintf(stdout, "%d: %f, %f, %f\n", i, norm[0], norm[1], norm[2]);
-    }
-    delete mi;
-  }
+  app.DisplayMeshMap(false);
   manager->Destroy();
 
   app.StartMainLoop();
