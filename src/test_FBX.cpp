@@ -193,11 +193,11 @@ void GetMesh(MeshInfo &mi, FbxNodeAttribute *a)
   fprintf(stdout, "    %s\n", buf);
   mi.meshIndices.reserve(polynum * 3);
   for(int i = 0; i < polynum; ++i){
-    for(int j = 0; j < m->GetPolygonSize(i); ++j) // vertices count [3|4]
+    int ps = m->GetPolygonSize(i); // vertices count [3|4]
+    for(int j = 0; j < ps; ++j)
       mi.meshIndices.push_back(m->GetPolygonVertex(i, j)); // polyidx, vertidx
   }
 #if 1 // ccw
-  // int posnum = m->GetControlPointsCount(); // count of vertices
   mi.meshVertices.reserve(mi.meshIndices.size());
   for(auto idx: mi.meshIndices){
     FbxVector4 vertex = m->GetControlPointAt(idx);
@@ -205,24 +205,77 @@ void GetMesh(MeshInfo &mi, FbxNodeAttribute *a)
     mi.meshVertices.push_back(vertex);
   }
 #else // ccw
+  // int posnum = m->GetControlPointsCount(); // count of vertices
   FbxVector4 *vertices = m->GetControlPoints(); // must set vertices[n][3] = 1;
   int *indices = m->GetPolygonVertices();
-  mi.meshVertices.reserve(vtxnum);
-  for(int i = 0; i < vtxnum; ++i){
+  mi.meshVertices.reserve(vtxnum); // posnum
+  for(int i = 0; i < vtxnum; ++i){ // posnum
     int idx = indices[i];
     FbxVector4 vertex = vertices[idx];
     assert(vertex[3] == 0.0); // set 1.0 ?
     mi.meshVertices.push_back(vertex);
   }
 #endif
+#if 0 // obsoleted ?
+  // int layernum = m->GetLayerCount(); // may be 1
+  // for(int i = 0; i < layernum; ++i){
+  //   FbxLayer *layer = m->GetLayer(n);
+  //   FbxLayerElementNormal *normelem = layer->GetNormals(); // may be layer 0
+  //   if(normelem == 0) continue;
+  //   // EMappingMode mm: eByControlPoint / eByPolygonVertex
+  //   // EReferenceMode rm: eDirect / eIndexToDirect
+  //   FbxLayerElement::EMappingMode mm = normelem->GetMappingMode();
+  //   FbxLayerElement::EReferenceMode rm = normelem->GetReferenceMode();
+  //   FbxLayerElementArrayTemplate<int> &idxAry = normelem->GetIndexArray();
+  //   FbxLayerElementArrayTemplate<FbxVector4> &dirAry = normelem->GetDirectArray();
+  //   int idxnum = idxAry.GetCount();
+  //   int normnum = dirAry.GetCount();
+  // }
+#endif
+  int elemnum = m->GetElementNormalCount();
+  assert(elemnum == 1);
+  auto normelem = m->GetElementNormal();
+  assert(normelem);
+  auto mm = normelem->GetMappingMode();
+  auto rm = normelem->GetReferenceMode();
+  const auto &idxAry = normelem->GetIndexArray();
+  const auto &dirAry = normelem->GetDirectArray();
+  int idxnum = idxAry.GetCount(); // may be 0 when eDirect
+  int normnum = dirAry.GetCount();
+  assert((rm == FbxGeometryElement::eDirect) || (rm == FbxGeometryElement::eIndexToDirect));
   // m->GetPolygonVertexNormal(p, n, norm); // update &norm
   FbxArray<FbxVector4> normals;
   m->GetPolygonVertexNormals(normals);
   mi.meshNormals.reserve(normals.Size());
-  for(int i = 0; i < normals.Size(); ++i){
-    FbxVector4 norm = normals[i];
-    assert(norm[3] == 0.0);
-    mi.meshNormals.push_back(norm);
+  if(mm == FbxGeometryElement::eByControlPoint){
+    for(auto idx: mi.meshIndices){
+      int nidx = rm == FbxGeometryElement::eDirect ? idx : idxAry.GetAt(idx);
+      FbxVector4 norm = dirAry.GetAt(nidx); // normals[...];
+      // assert(norm[3] == 1.0); // check [3] == 1
+      norm[3] = 1.0; // force set
+      mi.meshNormals.push_back(norm);
+    }
+  }else if(mm == FbxGeometryElement::eByPolygonVertex){
+    int idx = 0;
+    for(int i = 0; i < polynum; ++i){
+      int ps = m->GetPolygonSize(i); // vertices count [3|4]
+      for(int j = 0; j < ps; ++j){
+        int nidx = rm == FbxGeometryElement::eDirect ? idx : idxAry.GetAt(idx);
+        FbxVector4 norm = dirAry.GetAt(nidx); // normals[...];
+        // assert(norm[3] == 1.0); // check [3] == 1
+        norm[3] = 1.0; // force set
+        mi.meshNormals.push_back(norm);
+        ++idx;
+      }
+    }
+  }else{ // dummy (may not reach here)
+    // assert(false);
+    for(int i = 0; i < normals.Size(); ++i){
+      FbxVector4 norm = normals[i];
+      // assert(norm[3] == 1.0); // check [3] == 1
+      norm[3] = 1.0; // force set
+      mi.meshNormals.push_back(norm);
+    }
   }
 #if 0
   FbxStringList uvSetNameList;
