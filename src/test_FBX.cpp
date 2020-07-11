@@ -86,7 +86,14 @@ const char *typeNames[] = {
   "eBoundary", "eNurbsSurface", "eShape", "eLODGroup", "eSubDiv",
   "eCachedEffect", "eLine"};
 
-void GetMesh(FbxNodeAttribute *a);
+struct MeshInfo {
+  FbxNode *meshNode;
+  std::vector<int> meshIndices;
+  std::vector<FbxVector4> meshVertices;
+  std::vector<FbxVector4> meshNormals;
+};
+
+void GetMesh(MeshInfo &mi, FbxNodeAttribute *a);
 
 void depth(int d)
 {
@@ -95,7 +102,7 @@ void depth(int d)
   fprintf(stdout, fmt, "");
 }
 
-void GetNodeAndAttributes(std::map<std::string, FbxNode *> &meshMap,
+void GetNodeAndAttributes(std::map<std::string, MeshInfo *> &meshMap,
   FbxNode *node, int d, int n)
 {
   depth(d);
@@ -110,16 +117,18 @@ void GetNodeAndAttributes(std::map<std::string, FbxNode *> &meshMap,
     p += sprintf_s(buf + p, sizeof(buf) - p, ":%s", typeNames[t]);
   }
   fprintf(stdout, "(%d%s)", attrcount, buf);
+  MeshInfo *mi = new MeshInfo();
   FbxMesh *mesh = node->GetMesh();
   if(!mesh) fprintf(stdout, "\n");
   else{
     fprintf(stdout, " MeshName[%s]\n", mesh->GetName());
-    meshMap[node->GetName()] = node;
+    mi->meshNode = node;
+    meshMap[node->GetName()] = mi;
   }
   for(int i = 0; i < attrcount; ++i){
     FbxNodeAttribute *a = node->GetNodeAttributeByIndex(i);
     FbxNodeAttribute::EType t = a->GetAttributeType();
-    if(t == FbxNodeAttribute::eMesh){ depth(d); GetMesh(a); }
+    if(t == FbxNodeAttribute::eMesh){ depth(d); GetMesh(*mi, a); }
   }
 #if 0
   int matcount = scene->GetMaterialCount();
@@ -173,20 +182,49 @@ void GetNodeAndAttributes(std::map<std::string, FbxNode *> &meshMap,
     GetNodeAndAttributes(meshMap, node->GetChild(i), d + 1, i);
 }
 
-void GetMesh(FbxNodeAttribute *a)
+void GetMesh(MeshInfo &mi, FbxNodeAttribute *a)
 {
   FbxMesh *m = (FbxMesh *)a;
   int polynum = m->GetPolygonCount();
   int vtxnum = m->GetPolygonVertexCount(); // count of indices
-  int *indexAry = m->GetPolygonVertices();
+  static char buf[4096];
+  buf[0] = '\0';
+  sprintf_s(buf, sizeof(buf), "%6d polygons, %6d vertices", polynum, vtxnum);
+  fprintf(stdout, "    %s\n", buf);
+  mi.meshIndices.reserve(polynum * 3);
+  for(int i = 0; i < polynum; ++i){
+    for(int j = 0; j < m->GetPolygonSize(i); ++j) // vertices count [3|4]
+      mi.meshIndices.push_back(m->GetPolygonVertex(i, j)); // polyidx, vertidx
+  }
+#if 1 // ccw
+  // int posnum = m->GetControlPointsCount(); // count of vertices
+  mi.meshVertices.reserve(mi.meshIndices.size());
+  for(auto idx: mi.meshIndices){
+    FbxVector4 vertex = m->GetControlPointAt(idx);
+    assert(vertex[3] == 0.0); // set 1.0 ?
+    mi.meshVertices.push_back(vertex);
+  }
+#else // ccw
+  FbxVector4 *vertices = m->GetControlPoints(); // must set vertices[n][3] = 1;
+  int *indices = m->GetPolygonVertices();
+  mi.meshVertices.reserve(vtxnum);
+  for(int i = 0; i < vtxnum; ++i){
+    int idx = indices[i];
+    FbxVector4 vertex = vertices[idx];
+    assert(vertex[3] == 0.0); // set 1.0 ?
+    mi.meshVertices.push_back(vertex);
+  }
+#endif
+  // m->GetPolygonVertexNormal(p, n, norm); // update &norm
+  FbxArray<FbxVector4> normals;
+  m->GetPolygonVertexNormals(normals);
+  mi.meshNormals.reserve(normals.Size());
+  for(int i = 0; i < normals.Size(); ++i){
+    FbxVector4 norm = normals[i];
+    assert(norm[3] == 0.0);
+    mi.meshNormals.push_back(norm);
+  }
 #if 0
-  int k = m->GetPolygonSize(p); // vertices count of polygon index p [3|4]?
-  int index = m->GetPolygonVertex(p, n); // 0-polynum, 0-2 (when all triangle)
-  int posnum = m->GetControlPointsCount(); // count of vertices
-  FbxVector4 *posAry = m->GetControlPoints(); // must set posAry[m][3] = 1;
-  FbxVector4 cp = m->GetControlPointAt(index);
-  FbxVector4 normal;
-  m->GetPolygonVertexNormal(p, n, normal);
   FbxStringList uvSetNameList;
   m->GetUVSetNames(uvSetNameList);
   char *uvSetName = uvSetNameList.GetStringAt(p);
@@ -194,20 +232,13 @@ void GetMesh(FbxNodeAttribute *a)
   bool unmapped;
   m->GetPolygonVertexUV(p, n, uvSetName, uv, unmapped);
 #endif
-  static char buf[4096];
-  buf[0] = '\0';
-  sprintf_s(buf, sizeof(buf), "%6d polygons, %6d vertices", polynum, vtxnum);
-  fprintf(stdout, "    %s\n", buf);
 }
 
 int main(int ac, char **av)
 {
   fprintf(stdout, "sizeof(size_t): %zd\n", sizeof(size_t));
 
-  std::map<std::string, FbxNode *> meshMap;
-  std::map<std::string, std::vector<int> > meshIndices;
-  std::map<std::string, std::vector<FbxVector4> > meshVertices;
-  std::map<std::string, std::vector<FbxVector4> > meshNormals;
+  std::map<std::string, MeshInfo *> meshMap;
   FbxManager *manager = FbxManager::Create();
   FbxIOSettings *iosettings = FbxIOSettings::Create(manager, IOSROOT);
   manager->SetIOSettings(iosettings);
@@ -229,47 +260,22 @@ int main(int ac, char **av)
   fprintf(stdout, "%zd meshes\n", meshMap.size());
   for(auto it = meshMap.begin(); it != meshMap.end(); ++it){
     const std::string &name = it->first;
-    FbxMesh *mesh = it->second->GetMesh();
-    int cnt = mesh->GetPolygonCount();
-    fprintf(stdout, "%s: [%s], %d\n", name.c_str(), mesh->GetName(), cnt);
-    meshIndices[name] = std::vector<int>{};
-    meshIndices[name].reserve(cnt * 3);
-    for(int i = 0; i < cnt; ++i){
-      for(int j = 0; j < mesh->GetPolygonSize(i); ++j)
-        meshIndices[name].push_back(mesh->GetPolygonVertex(i, j));
-    }
-    meshVertices[name] = std::vector<FbxVector4>{};
-#if 1 // ccw
-    meshVertices[name].reserve(meshIndices[name].size());
-    for(auto idx: meshIndices[name]){
-      FbxVector4 vertex = mesh->GetControlPointAt(idx);
-      assert(vertex[3] == 0.0);
-      meshVertices[name].push_back(vertex);
+    MeshInfo *mi = it->second;
+    FbxMesh *m = mi->meshNode->GetMesh();
+    int polynum = m->GetPolygonCount();
+    fprintf(stdout, "%s: [%s], %d\n", name.c_str(), m->GetName(), polynum);
+    int *indices = m->GetPolygonVertices();
+    for(int i = 0; i < mi->meshVertices.size(); ++i){
+      FbxVector4 vertex = mi->meshVertices[i];
+      int idx = mi->meshIndices[i];
+      assert(idx == indices[i]);
       fprintf(stdout, "%d: %f, %f, %f\n", idx, vertex[0], vertex[1], vertex[2]);
     }
-#else // ccw
-    FbxVector4 *vertices = mesh->GetControlPoints();
-    int *indices = mesh->GetPolygonVertices();
-    int vcnt = mesh->GetPolygonVertexCount();
-    meshVertices[name].reserve(vcnt);
-    for(int i = 0; i < vcnt; ++i){
-      int idx = indices[i];
-      FbxVector4 vertex = vertices[idx];
-      assert(vertex[3] == 0.0);
-      meshVertices[name].push_back(vertex);
-      fprintf(stdout, "%d: %f, %f, %f\n", idx, vertex[0], vertex[1], vertex[2]);
-    }
-#endif
-    FbxArray<FbxVector4> normals;
-    mesh->GetPolygonVertexNormals(normals);
-    meshNormals[name] = std::vector<FbxVector4>{};
-    meshNormals[name].reserve(normals.Size());
-    for(int i = 0; i < normals.Size(); ++i){
-      FbxVector4 norm = normals[i];
-      assert(norm[3] == 0.0);
-      meshNormals[name].push_back(norm);
+    for(int i = 0; i < mi->meshNormals.size(); ++i){
+      FbxVector4 norm = mi->meshNormals[i];
       fprintf(stdout, "%d: %f, %f, %f\n", i, norm[0], norm[1], norm[2]);
     }
+    delete mi;
   }
   manager->Destroy();
 
