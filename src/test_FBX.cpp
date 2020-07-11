@@ -117,12 +117,12 @@ void GetNodeAndAttributes(std::map<std::string, MeshInfo *> &meshMap,
     p += sprintf_s(buf + p, sizeof(buf) - p, ":%s", typeNames[t]);
   }
   fprintf(stdout, "(%d%s)", attrcount, buf);
-  MeshInfo *mi = new MeshInfo();
+  MeshInfo *mi = NULL;
   FbxMesh *mesh = node->GetMesh();
   if(!mesh) fprintf(stdout, "\n");
   else{
     fprintf(stdout, " MeshName[%s]\n", mesh->GetName());
-    mi->meshNode = node;
+    mi = new MeshInfo{node};
     meshMap[node->GetName()] = mi;
   }
   for(int i = 0; i < attrcount; ++i){
