@@ -48,12 +48,14 @@
 #define IMPBASE "D:\\prj\\__Unity\\Metasequoia_Blender\\"
 #if 0
 #if 0
+#define IMPFBX_SCL 0.08f
 #define IMPFBX IMPBASE"unitychan.fbx"
 #define IMPSUB IMPBASE"UnityChanShader\\"
 #define IMPSHADER IMPSUB"Shader\\" // .cg .shader
 #define IMPMATERIALS IMPSUB"Materials\\" // .mat
 #define IMPTEXTURES IMPSUB"Texture\\" // .tga
 #else
+#define IMPFBX_SCL 0.08f
 #define IMPFBX IMPBASE"unitychan_SD_humanoid.fbx"
 #define IMPSUB IMPBASE"UnityChanSD\\"
 #define IMPSHADER IMPSUB"Shader\\" // .cg .shader
@@ -62,6 +64,7 @@
 #endif
 #else
 #if 1
+#define IMPFBX_SCL 2.00f
 //#define IMPFBX IMPBASE"unityExportSphere.fbx"
 //#define IMPSUB IMPBASE"UnityExportSphere\\" // empty
 //#define IMPFBX IMPBASE"unitySphere.fbx"
@@ -76,6 +79,7 @@
 #define IMPMATERIALS IMPSUB"Materials\\" // empty
 #define IMPTEXTURES IMPSUB"Textures\\" // empty
 #else
+#define IMPFBX_SCL 1.00f
 #define IMPFBX IMPBASE"unityMikuVer2.fbx"
 #define IMPSUB IMPBASE"UnityMikuVer2\\"
 #define IMPSHADER IMPSUB"Shader\\" // empty
@@ -305,7 +309,7 @@ public:
   virtual void TimerFunc(int id);
   virtual void Display();
   virtual void Keyboard(int key, int x, int y);
-  void DisplayMeshMap(bool flag=true);
+  void DisplayMeshMap(float scl, bool flag=true);
 };
 
 MyApp::MyApp() : FWApp()
@@ -471,28 +475,30 @@ void MyApp::Keyboard(int key, int x, int y)
   }
 }
 
-void MyApp::DisplayMeshMap(bool flag)
+void MyApp::DisplayMeshMap(float scl, bool flag)
 {
   if(flag) fprintf(stdout, "%zd meshes\n", meshMap.size());
   for(auto it = meshMap.begin(); it != meshMap.end(); ++it){
     const std::string &name = it->first;
     MeshInfo *mi = it->second;
     const std::string &meshName = mi->meshName;
+    size_t vtxnum = mi->meshVertices.size();
+    if(!vtxnum) continue;
     std::vector<Vec2f> coords = {
       {0.5f, 0.633f}, {1, 0.922f}, {0.5f, 0.056f}, {0, 0.922f}};
     Vec4f col = fwSdk->GetRender()->GetReservedColor(GRRenderBaseIf::NAVY);
     GRMeshDesc meshd;
-    meshd.vertices.reserve(mi->meshVertices.size());
-    meshd.texCoords.reserve(mi->meshVertices.size());
-    meshd.colors.reserve(mi->meshVertices.size());
-    meshd.faces.reserve(mi->meshVertices.size() / 3);
-    for(int i = 0; i < mi->meshVertices.size(); i += 3)
+    meshd.vertices.reserve(vtxnum);
+    meshd.texCoords.reserve(vtxnum);
+    meshd.colors.reserve(vtxnum);
+    meshd.faces.reserve(vtxnum / 3);
+    for(int i = 0; i < vtxnum; i += 3)
       meshd.faces.push_back(GRMeshFace{3, {i, i + 2, i + 1, 0}}); // ccw to cw
-    for(int i = 0; i < mi->meshVertices.size(); ++i){
+    for(int i = 0; i < vtxnum; ++i){
       FbxVector4 vertex = mi->meshVertices[i];
       int idx = mi->meshIndices[i];
-      meshd.vertices.push_back(Vec3f(vertex[0], vertex[1], vertex[2]));
-      meshd.texCoords.push_back(coords[idx]);
+      meshd.vertices.push_back(scl * Vec3f(vertex[0], vertex[1], vertex[2]));
+      meshd.texCoords.push_back(coords[idx % coords.size()]); // now unexpected UV
       meshd.colors.push_back(col);
       if(flag) fprintf(stdout, "%d: %f, %f, %f\n", idx, vertex[0], vertex[1], vertex[2]);
     }
@@ -511,8 +517,8 @@ void MyApp::DisplayMeshMap(bool flag)
   so->SetDynamical(false);
   so->SetGravity(false);
   so->SetMass(10.0);
-  CDConvexMeshDesc cmd;
-  cmd.vertices = std::vector<Vec3f>(meshd.vertices.size());
+  CDConvexMeshDesc cmd; // ConvexMesh shown not same as GRMesh
+  cmd.vertices = std::vector<Vec3f>(meshd.vertices.size()); // must copy items
   for(int i = 0; i < cmd.vertices.size(); ++i)
     cmd.vertices[i] = meshd.vertices[i];
   cmd.material.density = 1.0;
@@ -573,7 +579,7 @@ int main(int ac, char **av)
   }
   manager->Destroy();
 
-  app.DisplayMeshMap(false);
+  app.DisplayMeshMap(IMPFBX_SCL, false);
   app.StartMainLoop();
   fprintf(stdout, "done.\n");
   return 0;
