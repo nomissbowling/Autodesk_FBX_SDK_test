@@ -92,7 +92,7 @@ const char *typeNames[] = {
   "eCachedEffect", "eLine"};
 
 struct MeshInfo {
-  FbxNode *meshNode;
+  std::string meshName;
   std::vector<int> meshIndices;
   std::vector<FbxVector4> meshVertices;
   std::vector<FbxVector4> meshNormals;
@@ -127,7 +127,7 @@ void GetNodeAndAttributes(std::map<std::string, MeshInfo *> &meshMap,
   if(!mesh) fprintf(stdout, "\n");
   else{
     fprintf(stdout, " MeshName[%s]\n", mesh->GetName());
-    mi = new MeshInfo{node};
+    mi = new MeshInfo{mesh->GetName()};
     meshMap[node->GetName()] = mi;
   }
   for(int i = 0; i < attrcount; ++i){
@@ -477,14 +477,10 @@ void MyApp::DisplayMeshMap(bool flag)
   for(auto it = meshMap.begin(); it != meshMap.end(); ++it){
     const std::string &name = it->first;
     MeshInfo *mi = it->second;
-    FbxMesh *m = mi->meshNode->GetMesh();
-    int polynum = m->GetPolygonCount();
-    if(flag) fprintf(stdout, "%s: [%s], %d\n", name.c_str(), m->GetName(), polynum);
-    int *indices = m->GetPolygonVertices();
+    const std::string &meshName = mi->meshName;
     for(int i = 0; i < mi->meshVertices.size(); ++i){
       FbxVector4 vertex = mi->meshVertices[i];
       int idx = mi->meshIndices[i];
-      assert(idx == indices[i]);
       if(flag) fprintf(stdout, "%d: %f, %f, %f\n", idx, vertex[0], vertex[1], vertex[2]);
     }
     for(int i = 0; i < mi->meshNormals.size(); ++i){
@@ -520,9 +516,9 @@ int main(int ac, char **av)
     if(!root) fprintf(stderr, "no root\n");
     else GetNodeAndAttributes(app.meshMap, root, 0, 0);
   }
-  app.DisplayMeshMap(false);
   manager->Destroy();
 
+  app.DisplayMeshMap(false);
   app.StartMainLoop();
   fprintf(stdout, "done.\n");
   return 0;
