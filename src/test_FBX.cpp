@@ -504,12 +504,21 @@ void MyApp::DisplayMeshMap(bool flag)
 #if 1
   FWSceneIf *fwScene = GetSdk()->GetScene(0);
   PHSceneIf *phScene = fwScene->GetPHScene();
-  PHSolidIf *so = phScene->CreateSolid();
+  PHSolidDesc desc;
+  desc.mass = 10.0;
+  desc.inertia *= 0.033;
+  PHSolidIf *so = phScene->CreateSolid(desc);
   so->SetDynamical(false);
   so->SetGravity(false);
   so->SetMass(10.0);
-  // no shape (fwObj->GenerateCDMesh() later but failure duplicated vertices ?)
-  // must create CDConvexMesh ?
+  CDConvexMeshDesc cmd;
+  cmd.vertices = std::vector<Vec3f>(meshd.vertices.size());
+  for(int i = 0; i < cmd.vertices.size(); ++i)
+    cmd.vertices[i] = meshd.vertices[i];
+  cmd.material.density = 1.0;
+  cmd.material.e = 1.0f;
+  CDShapeIf *shape = fwSdk->GetPHSdk()->CreateShape(cmd);
+  so->AddShape(shape); // (auto fwObj->GenerateCDMesh() failure)
   so->SetFramePosition(Vec3d(0.0, 2.0, 0.0));
   fwSdk->GetScene(0)->SetSolidMaterial(GRRenderBaseIf::NAVY, so);
   fwSdk->GetScene(0)->SetWireMaterial(GRRenderBaseIf::NAVY, so);
