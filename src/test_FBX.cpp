@@ -478,9 +478,22 @@ void MyApp::DisplayMeshMap(bool flag)
     const std::string &name = it->first;
     MeshInfo *mi = it->second;
     const std::string &meshName = mi->meshName;
+    std::vector<Vec2f> coords = {
+      {0.5f, 0.633f}, {1, 0.922f}, {0.5f, 0.056f}, {0, 0.922f}};
+    Vec4f col = fwSdk->GetRender()->GetReservedColor(GRRenderBaseIf::NAVY);
+    GRMeshDesc meshd;
+    meshd.vertices.reserve(mi->meshVertices.size());
+    meshd.texCoords.reserve(mi->meshVertices.size());
+    meshd.colors.reserve(mi->meshVertices.size());
+    meshd.faces.reserve(mi->meshVertices.size() / 3);
+    for(int i = 0; i < mi->meshVertices.size(); i += 3)
+      meshd.faces.push_back(GRMeshFace{3, {i, i + 2, i + 1, 0}}); // ccw to cw
     for(int i = 0; i < mi->meshVertices.size(); ++i){
       FbxVector4 vertex = mi->meshVertices[i];
       int idx = mi->meshIndices[i];
+      meshd.vertices.push_back(Vec3f(vertex[0], vertex[1], vertex[2]));
+      meshd.texCoords.push_back(coords[idx]);
+      meshd.colors.push_back(col);
       if(flag) fprintf(stdout, "%d: %f, %f, %f\n", idx, vertex[0], vertex[1], vertex[2]);
     }
     for(int i = 0; i < mi->meshNormals.size(); ++i){
@@ -488,6 +501,39 @@ void MyApp::DisplayMeshMap(bool flag)
       if(flag) fprintf(stdout, "%d: %f, %f, %f\n", i, norm[0], norm[1], norm[2]);
     }
     delete mi;
+#if 1
+  FWSceneIf *fwScene = GetSdk()->GetScene(0);
+  PHSceneIf *phScene = fwScene->GetPHScene();
+  PHSolidIf *so = phScene->CreateSolid();
+  so->SetDynamical(false);
+  so->SetGravity(false);
+  so->SetMass(10.0);
+  // no shape (fwObj->GenerateCDMesh() later but failure duplicated vertices ?)
+  // must create CDConvexMesh ?
+  so->SetFramePosition(Vec3d(0.0, 2.0, 0.0));
+  fwSdk->GetScene(0)->SetSolidMaterial(GRRenderBaseIf::NAVY, so);
+  fwSdk->GetScene(0)->SetWireMaterial(GRRenderBaseIf::NAVY, so);
+
+  GRMaterialDesc matd = GRMaterialDesc(
+    Vec4f(0.8f, 0.8f, 0.8f, 1.0f), // ambient
+    Vec4f(0.6f, 0.6f, 0.6f, 1.0f), // diffuse
+    Vec4f(0.2f, 0.2f, 0.2f, 1.0f), // specular
+    Vec4f(0.5f, 0.5f, 0.5f, 1.0f), // emissive
+    10.0); // power
+  matd.texname = "../../../UnityAssets/custom-tools/Textures/72dpi_256x256.png";
+  GRFrameDesc frmd = GRFrameDesc(); // .transform = Affinef();
+
+  GRSceneIf *grScene = fwSdk->GetScene(0)->GetGRScene();
+  GRFrameIf *frm = grScene->CreateVisual(frmd)->Cast(); // parent = world
+  GRMeshIf *mesh = grScene->CreateVisual(meshd, frm)->Cast();
+  GRMaterialIf *mat = grScene->CreateVisual(matd, frm)->Cast();
+  mesh->AddChildObject(mat); // 0 -> meshd.materialList[0]
+  FWObjectIf *fwObj = fwSdk->GetScene(0)->CreateFWObject();
+  fwObj->SetPHSolid(so);
+  fwObj->SetGRFrame(frm);
+//  fwObj->GenerateCDMesh();
+  fwSdk->GetScene(0)->Sync();
+#endif
   }
   meshMap.clear();
 }
