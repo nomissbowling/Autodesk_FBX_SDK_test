@@ -331,7 +331,7 @@ void MyApp::Init(int ac, char **av)
   // tb->SetPosition(Vec3f(0.0f, 0.0f, 0.0f));
   tb->SetTarget(Vec3f(0.0f, 0.0f, 0.0f));
   tb->SetAngle(-3.14f / 4, 3.14f / 4);
-  tb->SetDistance(5.0f);
+  tb->SetDistance(8.0f);
   // grRender->SetViewMatrix(tb->GetAffine().inv());
 
   FWSceneIf *fwScene = GetSdk()->GetScene(0);
@@ -366,7 +366,7 @@ void MyApp::Init(int ac, char **av)
   floor->SetDynamical(false);
   floor->SetGravity(false);
   floor->SetMass(10000.0);
-  bd.boxsize = Vec3f(5.0f, 0.1f, 5.0f);
+  bd.boxsize = Vec3f(5.0f, 1.0f, 5.0f);
   floor->AddShape(phSdk->CreateShape(bd));
   floor->SetFramePosition(Vec3d(0.0, -1.0, 0.0));
   fwSdk->GetScene(0)->SetSolidMaterial(GRRenderBaseIf::HOTPINK, floor);
@@ -379,8 +379,8 @@ void MyApp::Init(int ac, char **av)
   std::vector<Vec3f> vertices = std::vector<Vec3f>(8);
   for(int i = 0; i < vertices.size(); ++i) vertices[i] = vtxs[i];
   std::vector<GRMeshFace> faces = std::vector<GRMeshFace>{
-    {4, {7, 4, 0, 3}}, {4, {7, 6, 5, 4}}, {4, {7, 3, 2, 6}},
-    {4, {1, 0, 4, 5}}, {4, {1, 2, 3, 0}}, {4, {1, 5, 6, 2}}};
+    {4, {7, 3, 0, 4}}, {4, {7, 4, 5, 6}}, {4, {7, 6, 2, 3}},
+    {4, {1, 5, 4, 0}}, {4, {1, 0, 3, 2}}, {4, {1, 2, 6, 5}}};
 
   std::vector<Vec2f> coords = {{1, 0}, {1, 1}, {0, 1}, {0, 0}};
   int nv = faces[0].nVertices;
@@ -410,7 +410,7 @@ void MyApp::Init(int ac, char **av)
     Vec4f(0.2f, 0.2f, 0.2f, 1.0f), // specular
     Vec4f(0.5f, 0.5f, 0.5f, 1.0f), // emissive
     10.0); // power
-  //matd.texname = "...";
+  matd.texname = "../../../UnityAssets/custom-tools/Textures/hex_256x256.png";
   GRFrameDesc frmd = GRFrameDesc(); // .transform = Affinef();
 
   GRSceneIf *grScene = fwSdk->GetScene(0)->GetGRScene();
