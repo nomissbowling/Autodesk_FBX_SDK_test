@@ -45,48 +45,28 @@
 
 #include <fbxsdk.h>
 
-#define IMPBASE "D:\\prj\\__Unity\\Metasequoia_Blender\\"
-#if 0
-#if 0
-#define IMPFBX_SCL 0.08f
-#define IMPFBX IMPBASE"unitychan.fbx"
-#define IMPSUB IMPBASE"UnityChanShader\\"
-#define IMPSHADER IMPSUB"Shader\\" // .cg .shader
-#define IMPMATERIALS IMPSUB"Materials\\" // .mat
-#define IMPTEXTURES IMPSUB"Texture\\" // .tga
-#else
-#define IMPFBX_SCL 0.08f
-#define IMPFBX IMPBASE"unitychan_SD_humanoid.fbx"
-#define IMPSUB IMPBASE"UnityChanSD\\"
-#define IMPSHADER IMPSUB"Shader\\" // .cg .shader
-#define IMPMATERIALS IMPSUB"Materials\\" // .mat
-#define IMPTEXTURES IMPSUB"Textures\\" // .tga
-#endif
-#else
-#if 1
-#define IMPFBX_SCL 2.00f
-//#define IMPFBX IMPBASE"unityExportSphere.fbx"
-//#define IMPSUB IMPBASE"UnityExportSphere\\" // empty
-//#define IMPFBX IMPBASE"unitySphere.fbx"
-//#define IMPSUB IMPBASE"UnitySphere\\" // empty
-//#define IMPFBX IMPBASE"unityCube.fbx"
-//#define IMPSUB IMPBASE"UnityCube\\" // empty
-//#define IMPFBX IMPBASE"unityCustomTetra.fbx"
-//#define IMPSUB IMPBASE"UnityCustomTetra\\" // empty
-#define IMPFBX IMPBASE"unityCustomTetraWithTexture.fbx"
-#define IMPSUB IMPBASE"UnityCustomTetraWithTexture\\" // empty
-#define IMPSHADER IMPSUB"Shader\\" // empty
-#define IMPMATERIALS IMPSUB"Materials\\" // empty
-#define IMPTEXTURES IMPSUB"Textures\\" // empty
-#else
-#define IMPFBX_SCL 1.00f
-#define IMPFBX IMPBASE"unityMikuVer2.fbx"
-#define IMPSUB IMPBASE"UnityMikuVer2\\"
-#define IMPSHADER IMPSUB"Shader\\" // empty
-#define IMPMATERIALS IMPSUB"Materials\\" // .asset
-#define IMPTEXTURES IMPSUB"Textures\\" // empty
-#endif
-#endif
+struct IMPInfo {
+  int flag;
+  float scl;
+  const char *fbx;
+  const char *sub;
+  const char *sub_shader;
+  const char *sub_materials;
+  const char *sub_textures;
+};
+
+#define IMPBASE "D:\\prj\\__Unity\\Metasequoia_Blender"
+IMPInfo impfbx[] = { // Shader: .cg .shader, Materials: .mat, Textures: .tga
+  {1, 0.02f, "unitychan.fbx", "UnityChanShader", "Shader", "Materials", "Texture"},
+  {1, 0.02f, "unitychan_SD_humanoid.fbx", "UnityChanSD", "Shader", "Materials", "Textures"},
+  {1, 2.00f, "unityExportSphere.fbx", "UnityExportSphere", "Shader", "Materials", "Textures"},
+  {1, 2.00f, "unitySphere.fbx", "UnitySphere", "Shader", "Materials", "Textures"},
+  {1, 2.00f, "unityCube.fbx", "UnityCube", "Shader", "Materials", "Textures"},
+  {1, 2.00f, "unityCustomTetra.fbx", "UnityCustomTetra", "Shader", "Materials", "Textures"},
+  {1, 2.00f, "unityCustomTetraWithTexture.fbx", "UnityCustomTetraWithTexture", "Shader", "Materials", "Textures"},
+  {1, 2.00f, "unityMikuVer2.fbx", "UnityMikuVer2", "Shader", "Materials", "Textures"},
+  {0, 2.00f, "unityKizunaAI.fbx", "UnityKizunaAI", "Shader", "Materials", "Textures"},
+  {0, 2.00f, "unityNemaUi.fbx", "UnityNemaUi", "Shader", "Materials", "Textures"}};
 
 const char *typeNames[] = {
   "eUnknown", "eNull", "eMarker", "eSkeleton", "eMesh", "eNurbs",
@@ -309,7 +289,8 @@ public:
   virtual void TimerFunc(int id);
   virtual void Display();
   virtual void Keyboard(int key, int x, int y);
-  void DisplayMeshMap(float scl, bool flag=true);
+  void DisplayMeshMap(Vec3d pos, float scl, bool flag=true);
+  int LoadFBX(Vec3d pos, const char *base, IMPInfo *imp);
 };
 
 MyApp::MyApp() : FWApp()
@@ -335,7 +316,7 @@ void MyApp::Init(int ac, char **av)
   // tb->SetPosition(Vec3f(0.0f, 0.0f, 0.0f));
   tb->SetTarget(Vec3f(0.0f, 0.0f, 0.0f));
   tb->SetAngle(-3.14f / 4, 3.14f / 4);
-  tb->SetDistance(8.0f);
+  tb->SetDistance(15.0f);
   // grRender->SetViewMatrix(tb->GetAffine().inv());
 
   FWSceneIf *fwScene = GetSdk()->GetScene(0);
@@ -475,7 +456,7 @@ void MyApp::Keyboard(int key, int x, int y)
   }
 }
 
-void MyApp::DisplayMeshMap(float scl, bool flag)
+void MyApp::DisplayMeshMap(Vec3d pos, float scl, bool flag)
 {
   if(flag) fprintf(stdout, "%zd meshes\n", meshMap.size());
   for(auto it = meshMap.begin(); it != meshMap.end(); ++it){
@@ -525,7 +506,7 @@ void MyApp::DisplayMeshMap(float scl, bool flag)
   cmd.material.e = 1.0f;
   CDShapeIf *shape = fwSdk->GetPHSdk()->CreateShape(cmd);
   so->AddShape(shape); // (auto fwObj->GenerateCDMesh() failure)
-  so->SetFramePosition(Vec3d(0.0, 2.0, 0.0));
+  so->SetFramePosition(pos);
   fwSdk->GetScene(0)->SetSolidMaterial(GRRenderBaseIf::NAVY, so);
   fwSdk->GetScene(0)->SetWireMaterial(GRRenderBaseIf::NAVY, so);
 
@@ -553,17 +534,16 @@ void MyApp::DisplayMeshMap(float scl, bool flag)
   meshMap.clear();
 }
 
-int main(int ac, char **av)
+int MyApp::LoadFBX(Vec3d pos, const char *base, IMPInfo *imp)
 {
-  fprintf(stdout, "sizeof(size_t): %zd\n", sizeof(size_t));
-  MyApp app;
-  app.Init(ac, av);
-
   FbxManager *manager = FbxManager::Create();
   FbxIOSettings *iosettings = FbxIOSettings::Create(manager, IOSROOT);
   manager->SetIOSettings(iosettings);
   FbxImporter *importer = FbxImporter::Create(manager, "Importer");
-  const char *fn = IMPFBX;
+  char fn[1024];
+  strcpy_s(fn, sizeof(fn), base);
+  strcat_s(fn, sizeof(fn), "\\");
+  strcat_s(fn, sizeof(fn), imp->fbx);
   fprintf(stdout, "Loading: [%s]\n", fn);
   if(!importer->Initialize(fn, -1, manager->GetIOSettings())){
     fprintf(stderr, "import: %s\n", importer->GetStatus().GetErrorString());
@@ -575,11 +555,23 @@ int main(int ac, char **av)
     geometryConverter.Triangulate(scene, true); // convert all polygons triangle
     FbxNode *root = scene->GetRootNode();
     if(!root) fprintf(stderr, "no root\n");
-    else GetNodeAndAttributes(app.meshMap, root, 0, 0);
+    else GetNodeAndAttributes(meshMap, root, 0, 0);
   }
   manager->Destroy();
+  DisplayMeshMap(pos, imp->scl, false);
+  return 0;
+}
 
-  app.DisplayMeshMap(IMPFBX_SCL, false);
+int main(int ac, char **av)
+{
+  fprintf(stdout, "sizeof(size_t): %zd\n", sizeof(size_t));
+  MyApp app;
+  app.Init(ac, av);
+  int num = sizeof(impfbx) / sizeof(impfbx[0]);
+  for(int i = 0; i < num; ++i){
+    if(!impfbx[i].flag) continue;
+    app.LoadFBX(Vec3d((i - num / 2) * -2.0, 2.0, 0.0), IMPBASE, &impfbx[i]);
+  }
   app.StartMainLoop();
   fprintf(stdout, "done.\n");
   return 0;
