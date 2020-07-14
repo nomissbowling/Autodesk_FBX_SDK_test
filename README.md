@@ -39,18 +39,21 @@ Nema Ui
 -------
 
 - [https://okinawaclub.fanbox.cc/posts/610208](https://okinawaclub.fanbox.cc/posts/610208)
+根間うい license (C)okinawaclub
 
 
 Kizuna AI
 ---------
 
 - [https://kizunaai.com/download/](https://kizunaai.com/download/)
+キズナアイ license (c)Kizuna AI
 
 
 MikuMikuDance
 -------------
 
 - [https://w.atwiki.jp/vpvpwiki/pages/187.html](https://w.atwiki.jp/vpvpwiki/pages/187.html)
+- [http://www.nicovideo.jp/watch/sm2420025](http://www.nicovideo.jp/watch/sm2420025)
 - [https://mmd-for-unity-proj.github.io/mmd-for-unity/howto.html](https://mmd-for-unity-proj.github.io/mmd-for-unity/howto.html)
 - [https://github.com/mmd-for-unity-proj/mmd-for-unity](https://github.com/mmd-for-unity-proj/mmd-for-unity)
 - [https://baba-s.hatenablog.com/entry/2018/04/11/085500](https://baba-s.hatenablog.com/entry/2018/04/11/085500)
