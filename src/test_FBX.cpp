@@ -65,8 +65,8 @@ IMPInfo impfbx[] = { // Shader: .cg .shader, Materials: .mat, Textures: .tga
   {1, 2.00f, "unityCustomTetra.fbx", "UnityCustomTetra", "Shader", "Materials", "Textures"},
   {1, 2.00f, "unityCustomTetraWithTexture.fbx", "UnityCustomTetraWithTexture", "Shader", "Materials", "Textures"},
   {1, 2.00f, "unityMikuVer2.fbx", "UnityMikuVer2", "Shader", "Materials", "Textures"},
-  {0, 2.00f, "unityKizunaAI.fbx", "UnityKizunaAI", "Shader", "Materials", "Textures"},
-  {0, 2.00f, "unityNemaUi.fbx", "UnityNemaUi", "Shader", "Materials", "Textures"}};
+  {1, 2.00f, "unityKizunaAI.fbx", "UnityKizunaAI", "Shader", "Materials", "Textures"},
+  {1, 2.00f, "unityNemaUi.fbx", "UnityNemaUi", "Shader", "Materials", "Textures"}};
 
 const char *typeNames[] = {
   "eUnknown", "eNull", "eMarker", "eSkeleton", "eMesh", "eNurbs",

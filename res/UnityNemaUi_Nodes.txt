@@ -1,0 +1,781 @@
+Loading: [unityNemaUi.fbx]
+   0[RootNode](0)
+    0[根間うい_ver1.01](1:eMesh) MeshName[]
+          0 polygons,      0 vertices
+     0[Model](1:eMesh) MeshName[]
+           0 polygons,      0 vertices
+      0[全ての親](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[センター](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+        0[グルーブ](1:eMesh) MeshName[]
+              0 polygons,      0 vertices
+         0[腰](1:eMesh) MeshName[]
+               0 polygons,      0 vertices
+          0[下半身](1:eMesh) MeshName[]
+                0 polygons,      0 vertices
+           0[腰キャンセル左](1:eMesh) MeshName[]
+                 0 polygons,      0 vertices
+            0[左足](1:eMesh) MeshName[]
+                  0 polygons,      0 vertices
+             0[左ひざ](1:eMesh) MeshName[]
+                   0 polygons,      0 vertices
+              0[左足首](1:eMesh) MeshName[]
+                    0 polygons,      0 vertices
+               0[左つま先](1:eMesh) MeshName[]
+                     0 polygons,      0 vertices
+                0[左つま先2](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+              1[r_左ひざ](1:eMesh) MeshName[]
+                    0 polygons,      0 vertices
+             1[r_左足](1:eMesh) MeshName[]
+                   0 polygons,      0 vertices
+           1[腰キャンセル右](1:eMesh) MeshName[]
+                 0 polygons,      0 vertices
+            0[右足](1:eMesh) MeshName[]
+                  0 polygons,      0 vertices
+             0[右ひざ](1:eMesh) MeshName[]
+                   0 polygons,      0 vertices
+              0[右足首](1:eMesh) MeshName[]
+                    0 polygons,      0 vertices
+               0[右つま先](1:eMesh) MeshName[]
+                     0 polygons,      0 vertices
+                0[右つま先2](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+              1[r_右ひざ](1:eMesh) MeshName[]
+                    0 polygons,      0 vertices
+             1[r_右足](1:eMesh) MeshName[]
+                   0 polygons,      0 vertices
+           2[リボン0](1:eMesh) MeshName[]
+                 0 polygons,      0 vertices
+           3[r_下半身](1:eMesh) MeshName[]
+                 0 polygons,      0 vertices
+           4[r_下半身_帯_形状保持](1:eMesh) MeshName[]
+                 0 polygons,      0 vertices
+          1[上半身](1:eMesh) MeshName[]
+                0 polygons,      0 vertices
+           0[上半身2](1:eMesh) MeshName[]
+                 0 polygons,      0 vertices
+            0[上半身3](1:eMesh) MeshName[]
+                  0 polygons,      0 vertices
+             0[首](1:eMesh) MeshName[]
+                   0 polygons,      0 vertices
+              0[首2](1:eMesh) MeshName[]
+                    0 polygons,      0 vertices
+               0[頭](1:eMesh) MeshName[]
+                     0 polygons,      0 vertices
+                0[頭先](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+                1[両目](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+                2[両目先](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+                3[両目 Hi](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+                4[両目 Hi先](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+                5[左目](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+                6[右目](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+                7[左目 Hi](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+                8[右目Hi](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+                9[右もみあげA１](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+                 0[右もみあげA２](1:eMesh) MeshName[]
+                       0 polygons,      0 vertices
+                  0[r_右もみあげA２](1:eMesh) MeshName[]
+                        0 polygons,      0 vertices
+                 1[r_右もみあげA１](1:eMesh) MeshName[]
+                       0 polygons,      0 vertices
+               10[右もみあげB１](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+                 0[右もみあげB２](1:eMesh) MeshName[]
+                       0 polygons,      0 vertices
+                  0[r_右もみあげB２](1:eMesh) MeshName[]
+                        0 polygons,      0 vertices
+               11[左もみあげA１](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+                 0[左もみあげA２](1:eMesh) MeshName[]
+                       0 polygons,      0 vertices
+                  0[r_左もみあげA２](1:eMesh) MeshName[]
+                        0 polygons,      0 vertices
+                 1[r_左もみあげA１](1:eMesh) MeshName[]
+                       0 polygons,      0 vertices
+               12[左もみあげB１](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+                 0[左もみあげB２](1:eMesh) MeshName[]
+                       0 polygons,      0 vertices
+                  0[r_左もみあげB２](1:eMesh) MeshName[]
+                        0 polygons,      0 vertices
+               13[前髪A１](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+                 0[前髪A２](1:eMesh) MeshName[]
+                       0 polygons,      0 vertices
+                  0[前髪A３](1:eMesh) MeshName[]
+                        0 polygons,      0 vertices
+                   0[r_前髪A３](1:eMesh) MeshName[]
+                         0 polygons,      0 vertices
+                  1[r_前髪A２](1:eMesh) MeshName[]
+                        0 polygons,      0 vertices
+               14[前髪B１](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+                 0[前髪B２](1:eMesh) MeshName[]
+                       0 polygons,      0 vertices
+                  0[r_前髪B２](1:eMesh) MeshName[]
+                        0 polygons,      0 vertices
+               15[前髪C１](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+                 0[前髪C２](1:eMesh) MeshName[]
+                       0 polygons,      0 vertices
+                  0[r_前髪C２](1:eMesh) MeshName[]
+                        0 polygons,      0 vertices
+               16[前髪D１](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+                 0[前髪D２](1:eMesh) MeshName[]
+                       0 polygons,      0 vertices
+                  0[r_前髪D２](1:eMesh) MeshName[]
+                        0 polygons,      0 vertices
+               17[前髪E１](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+                 0[前髪E２](1:eMesh) MeshName[]
+                       0 polygons,      0 vertices
+                  0[前髪E３](1:eMesh) MeshName[]
+                        0 polygons,      0 vertices
+                   0[r_前髪E３](1:eMesh) MeshName[]
+                         0 polygons,      0 vertices
+                  1[r_前髪E２](1:eMesh) MeshName[]
+                        0 polygons,      0 vertices
+               18[r_頭](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+               1[r_首2](1:eMesh) MeshName[]
+                     0 polygons,      0 vertices
+              1[r_首](1:eMesh) MeshName[]
+                    0 polygons,      0 vertices
+             1[右肩](1:eMesh) MeshName[]
+                   0 polygons,      0 vertices
+              0[右腕](1:eMesh) MeshName[]
+                    0 polygons,      0 vertices
+               0[右腕捩](1:eMesh) MeshName[]
+                     0 polygons,      0 vertices
+                0[右ひじ](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+                 0[右手捩](1:eMesh) MeshName[]
+                       0 polygons,      0 vertices
+                  0[右手首](1:eMesh) MeshName[]
+                        0 polygons,      0 vertices
+                   0[右小指０](1:eMesh) MeshName[]
+                         0 polygons,      0 vertices
+                    0[右小指１](1:eMesh) MeshName[]
+                          0 polygons,      0 vertices
+                     0[右小指２](1:eMesh) MeshName[]
+                           0 polygons,      0 vertices
+                      0[右小指３](1:eMesh) MeshName[]
+                            0 polygons,      0 vertices
+                       0[右小指先](1:eMesh) MeshName[]
+                             0 polygons,      0 vertices
+                   1[右薬指０](1:eMesh) MeshName[]
+                         0 polygons,      0 vertices
+                    0[右薬指１](1:eMesh) MeshName[]
+                          0 polygons,      0 vertices
+                     0[右薬指２](1:eMesh) MeshName[]
+                           0 polygons,      0 vertices
+                      0[右薬指３](1:eMesh) MeshName[]
+                            0 polygons,      0 vertices
+                       0[右薬指先](1:eMesh) MeshName[]
+                             0 polygons,      0 vertices
+                   2[右中指０](1:eMesh) MeshName[]
+                         0 polygons,      0 vertices
+                    0[右中指１](1:eMesh) MeshName[]
+                          0 polygons,      0 vertices
+                     0[右中指２](1:eMesh) MeshName[]
+                           0 polygons,      0 vertices
+                      0[右中指３](1:eMesh) MeshName[]
+                            0 polygons,      0 vertices
+                       0[右中指先](1:eMesh) MeshName[]
+                             0 polygons,      0 vertices
+                   3[右人指０](1:eMesh) MeshName[]
+                         0 polygons,      0 vertices
+                    0[右人指１](1:eMesh) MeshName[]
+                          0 polygons,      0 vertices
+                     0[右人指２](1:eMesh) MeshName[]
+                           0 polygons,      0 vertices
+                      0[右人指３](1:eMesh) MeshName[]
+                            0 polygons,      0 vertices
+                       0[右人指先](1:eMesh) MeshName[]
+                             0 polygons,      0 vertices
+                   4[右親指０](1:eMesh) MeshName[]
+                         0 polygons,      0 vertices
+                    0[右親指１](1:eMesh) MeshName[]
+                          0 polygons,      0 vertices
+                     0[右親指２](1:eMesh) MeshName[]
+                           0 polygons,      0 vertices
+                      0[右親指先](1:eMesh) MeshName[]
+                            0 polygons,      0 vertices
+                   5[r_右手首](1:eMesh) MeshName[]
+                         0 polygons,      0 vertices
+                 1[右手捩1](1:eMesh) MeshName[]
+                       0 polygons,      0 vertices
+                 2[右手捩2](1:eMesh) MeshName[]
+                       0 polygons,      0 vertices
+                 3[右手捩3](1:eMesh) MeshName[]
+                       0 polygons,      0 vertices
+                 4[r_右ひじ](1:eMesh) MeshName[]
+                       0 polygons,      0 vertices
+               1[右腕捩1](1:eMesh) MeshName[]
+                     0 polygons,      0 vertices
+               2[右腕捩2](1:eMesh) MeshName[]
+                     0 polygons,      0 vertices
+               3[右腕捩3](1:eMesh) MeshName[]
+                     0 polygons,      0 vertices
+               4[r_右腕](1:eMesh) MeshName[]
+                     0 polygons,      0 vertices
+              1[r_右肩](1:eMesh) MeshName[]
+                    0 polygons,      0 vertices
+             2[右胸](1:eMesh) MeshName[]
+                   0 polygons,      0 vertices
+             3[左胸](1:eMesh) MeshName[]
+                   0 polygons,      0 vertices
+             4[左肩](1:eMesh) MeshName[]
+                   0 polygons,      0 vertices
+              0[左腕](1:eMesh) MeshName[]
+                    0 polygons,      0 vertices
+               0[左腕捩](1:eMesh) MeshName[]
+                     0 polygons,      0 vertices
+                0[左ひじ](1:eMesh) MeshName[]
+                      0 polygons,      0 vertices
+                 0[左手捩](1:eMesh) MeshName[]
+                       0 polygons,      0 vertices
+                  0[左手首](1:eMesh) MeshName[]
+                        0 polygons,      0 vertices
+                   0[左小指０](1:eMesh) MeshName[]
+                         0 polygons,      0 vertices
+                    0[左小指１](1:eMesh) MeshName[]
+                          0 polygons,      0 vertices
+                     0[左小指２](1:eMesh) MeshName[]
+                           0 polygons,      0 vertices
+                      0[左小指３](1:eMesh) MeshName[]
+                            0 polygons,      0 vertices
+                       0[左小指先](1:eMesh) MeshName[]
+                             0 polygons,      0 vertices
+                   1[左薬指０](1:eMesh) MeshName[]
+                         0 polygons,      0 vertices
+                    0[左薬指１](1:eMesh) MeshName[]
+                          0 polygons,      0 vertices
+                     0[左薬指２](1:eMesh) MeshName[]
+                           0 polygons,      0 vertices
+                      0[左薬指３](1:eMesh) MeshName[]
+                            0 polygons,      0 vertices
+                       0[左薬指先](1:eMesh) MeshName[]
+                             0 polygons,      0 vertices
+                   2[左中指０](1:eMesh) MeshName[]
+                         0 polygons,      0 vertices
+                    0[左中指１](1:eMesh) MeshName[]
+                          0 polygons,      0 vertices
+                     0[左中指２](1:eMesh) MeshName[]
+                           0 polygons,      0 vertices
+                      0[左中指３](1:eMesh) MeshName[]
+                            0 polygons,      0 vertices
+                       0[左中指先](1:eMesh) MeshName[]
+                             0 polygons,      0 vertices
+                   3[左人指０](1:eMesh) MeshName[]
+                         0 polygons,      0 vertices
+                    0[左人指１](1:eMesh) MeshName[]
+                          0 polygons,      0 vertices
+                     0[左人指２](1:eMesh) MeshName[]
+                           0 polygons,      0 vertices
+                      0[左人指３](1:eMesh) MeshName[]
+                            0 polygons,      0 vertices
+                       0[左人指先](1:eMesh) MeshName[]
+                             0 polygons,      0 vertices
+                   4[左親指０](1:eMesh) MeshName[]
+                         0 polygons,      0 vertices
+                    0[左親指１](1:eMesh) MeshName[]
+                          0 polygons,      0 vertices
+                     0[左親指２](1:eMesh) MeshName[]
+                           0 polygons,      0 vertices
+                      0[左親指先](1:eMesh) MeshName[]
+                            0 polygons,      0 vertices
+                   5[r_左手首](1:eMesh) MeshName[]
+                         0 polygons,      0 vertices
+                 1[左手捩1](1:eMesh) MeshName[]
+                       0 polygons,      0 vertices
+                 2[左手捩2](1:eMesh) MeshName[]
+                       0 polygons,      0 vertices
+                 3[左手捩3](1:eMesh) MeshName[]
+                       0 polygons,      0 vertices
+                 4[r_左ひじ](1:eMesh) MeshName[]
+                       0 polygons,      0 vertices
+               1[左腕捩1](1:eMesh) MeshName[]
+                     0 polygons,      0 vertices
+               2[左腕捩2](1:eMesh) MeshName[]
+                     0 polygons,      0 vertices
+               3[左腕捩3](1:eMesh) MeshName[]
+                     0 polygons,      0 vertices
+               4[r_左腕](1:eMesh) MeshName[]
+                     0 polygons,      0 vertices
+              1[r_左肩](1:eMesh) MeshName[]
+                    0 polygons,      0 vertices
+             5[r_上半身3](1:eMesh) MeshName[]
+                   0 polygons,      0 vertices
+            1[r_上半身2](1:eMesh) MeshName[]
+                  0 polygons,      0 vertices
+           1[r_上半身](1:eMesh) MeshName[]
+                 0 polygons,      0 vertices
+      1[左足ＩＫ](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[左つま先ＩＫ](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+        0[左つま先ＩＫ先](1:eMesh) MeshName[]
+              0 polygons,      0 vertices
+       1[左足ＩＫ先](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+      2[右足ＩＫ](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[右つま先ＩＫ](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+        0[右つま先ＩＫ先](1:eMesh) MeshName[]
+              0 polygons,      0 vertices
+       1[右足ＩＫ先](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     1[Mesh](1:eMesh) MeshName[]
+           0 polygons,      0 vertices
+      0[Mesh0](1:eMesh) MeshName[]
+        87614 polygons, 262842 vertices
+     2[Expression](1:eMesh) MeshName[]
+           0 polygons,      0 vertices
+      0[怒り](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+      1[困る](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+      2[真面目](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+      3[下](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+      4[上](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+      5[まばたき](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+      6[笑い](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+      7[びっくり](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+      8[瞳小](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+      9[ジト目](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     10[キリッ](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     11[カメラ目線](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     12[ハート](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     13[☆](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     14[リラックス](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     15[ウインク右](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     16[ウインク左](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     17[ウインク2右](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     18[ウインク2左](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     19[悲しい](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     20[ヤンデレ](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     21[涙](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     22[涙_前](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     23[涙_上げ](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     24[目_上](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     25[目_下](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     26[目_左](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     27[目_右](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     28[瞼_上](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     29[瞼_下](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     30[瞼_左](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     31[瞼_右](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     32[あ](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     33[わ](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     34[い](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     35[う](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     36[え](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     37[お](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     38[おー](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     39[アヒル口_閉じ](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     40[アヒル口_開け](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     41[口角下げ](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     42[ニヤリ](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     43[▲_閉じ](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     44[▲_開け](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     45[拗ねる1](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     46[拗ねる2](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     47[テヘペロ1](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     48[テヘペロ2](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     49[照れ](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     50[青ざめ](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+     3[Physics](1:eMesh) MeshName[]
+           0 polygons,      0 vertices
+      0[リボン_01_1](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_リボン_01_1](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+      1[リボン_01_2](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_リボン_01_2](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+      2[リボン_01_3](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_リボン_01_3](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+      3[リボン_02_1](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[リボン_02_2](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+       1[r_リボン_02_1](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+      4[リボン_03_1](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_リボン_03_1](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+      5[リボン_03_2](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_リボン_03_2](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+      6[リボン_03_3](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_リボン_03_3](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+      7[リボン_04_1](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[リボン_04_2](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+       1[r_リボン_04_1](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+      8[裾_01_1](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[裾_01_2](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+       1[r_裾_01_1](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+      9[裾_02_1](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[裾_02_2](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+       1[r_裾_02_1](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     10[帯_01_1](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_帯_01_1](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     11[帯_01_2](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_帯_01_2](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     12[帯_01_3](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[帯_01_4](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+       1[r_帯_01_3](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     13[帯_02_1](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_帯_02_1](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     14[帯_02_2](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_帯_02_2](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     15[帯_02_3](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[帯_02_4](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+       1[r_帯_02_3](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     16[帯_03_1](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[帯_03_2](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+       1[r_帯_03_1](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     17[帯_04_1](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_帯_04_1](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     18[帯_04_2](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_帯_04_2](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     19[帯_04_3](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_帯_04_3](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     20[帯_04_4](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_帯_04_4](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     21[帯_04_5](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[帯_04_6](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+       1[r_帯_04_5](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     22[帯_05_1](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_帯_05_1](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     23[帯_05_2](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_帯_05_2](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     24[帯_05_3](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_帯_05_3](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     25[帯_05_4](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_帯_05_4](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     26[帯_05_5](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[帯_05_6](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+       1[r_帯_05_5](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     27[帯_06_1](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_帯_06_1](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     28[帯_06_2](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_帯_06_2](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     29[帯_06_3](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_帯_06_3](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     30[帯_06_4](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_帯_06_4](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     31[帯_06_5](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[帯_06_6](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+       1[r_帯_06_5](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     32[右もみあげA３](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_右もみあげA３](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     33[右もみあげA４](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_右もみあげA４](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     34[右もみあげB３](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_右もみあげB３](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     35[右もみあげB４](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_右もみあげB４](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     36[右もみあげB５](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_右もみあげB５](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     37[右もみあげB６](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_右もみあげB６](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     38[右ツインテ輪1](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_右ツインテ輪1](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     39[右ツインテ輪2](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_右ツインテ輪2](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     40[左もみあげA３](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_左もみあげA３](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     41[左もみあげA４](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_左もみあげA４](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     42[左もみあげB３](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_左もみあげB３](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     43[左もみあげB４](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_左もみあげB４](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     44[左もみあげB５](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_左もみあげB５](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     45[左もみあげB６](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_左もみあげB６](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     46[左ツインテ輪1](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_左ツインテ輪1](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     47[左ツインテ輪2](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_左ツインテ輪2](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     48[前髪B３](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_前髪B３](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     49[前髪C３](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_前髪C３](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     50[前髪D３](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_前髪D３](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     51[左ツインテ１](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_左ツインテ１](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     52[左ツインテ２](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_左ツインテ２](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     53[左ツインテ３](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_左ツインテ３](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     54[左ツインテ４](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_左ツインテ４](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     55[左ツインテ５](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_左ツインテ５](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     56[左ツインテ６](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_左ツインテ６](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     57[左ツインテ７](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_左ツインテ７](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     58[左ツインテ８](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_左ツインテ８](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     59[左ツインテ９](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_左ツインテ９](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     60[左ツインテ１０](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_左ツインテ１０](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     61[左ツインテ１１](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_左ツインテ１１](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     62[左ツインテ１２](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_左ツインテ１２](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     63[左ツインテ１３](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_左ツインテ１３](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     64[右ツインテ１](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_右ツインテ１](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     65[右ツインテ２](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_右ツインテ２](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     66[右ツインテ３](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_右ツインテ３](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     67[右ツインテ４](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_右ツインテ４](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     68[右ツインテ５](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_右ツインテ５](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     69[右ツインテ６](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_右ツインテ６](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     70[右ツインテ７](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_右ツインテ７](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     71[右ツインテ８](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_右ツインテ８](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     72[右ツインテ９](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_右ツインテ９](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     73[右ツインテ１０](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_右ツインテ１０](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     74[右ツインテ１１](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_右ツインテ１１](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     75[右ツインテ１２](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_右ツインテ１２](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+     76[右ツインテ１３](1:eMesh) MeshName[]
+            0 polygons,      0 vertices
+       0[r_右ツインテ１３](1:eMesh) MeshName[]
+             0 polygons,      0 vertices
+done.
