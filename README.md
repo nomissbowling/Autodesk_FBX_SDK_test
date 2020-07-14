@@ -39,6 +39,7 @@ Nema Ui
 -------
 
 - [https://okinawaclub.fanbox.cc/posts/610208](https://okinawaclub.fanbox.cc/posts/610208)
+
 根間うい license (C)okinawaclub
 
 
@@ -46,12 +47,14 @@ Kizuna AI
 ---------
 
 - [https://kizunaai.com/download/](https://kizunaai.com/download/)
+
 キズナアイ license (c)Kizuna AI
 
 
 MikuMikuDance
 -------------
 
+- [https://sites.google.com/view/vpvp/](https://sites.google.com/view/vpvp/)
 - [https://w.atwiki.jp/vpvpwiki/pages/187.html](https://w.atwiki.jp/vpvpwiki/pages/187.html)
 - [http://www.nicovideo.jp/watch/sm2420025](http://www.nicovideo.jp/watch/sm2420025)
 - [https://mmd-for-unity-proj.github.io/mmd-for-unity/howto.html](https://mmd-for-unity-proj.github.io/mmd-for-unity/howto.html)
@@ -59,6 +62,7 @@ MikuMikuDance
 - [https://baba-s.hatenablog.com/entry/2018/04/11/085500](https://baba-s.hatenablog.com/entry/2018/04/11/085500)
 - [https://github.com/KellanHiggins/UnityFBXExporter](https://github.com/KellanHiggins/UnityFBXExporter)
 - [https://note.com/nomissbowling/n/nceb170032475](https://note.com/nomissbowling/n/nceb170032475)
+- [https://note.com/nomissbowling/n/n19a430d7d732](https://note.com/nomissbowling/n/n19a430d7d732)
 
 
 Unity-chan
