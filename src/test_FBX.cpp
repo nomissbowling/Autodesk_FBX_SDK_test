@@ -61,7 +61,7 @@ IMPInfo impfbx[] = { // Shader: .cg .shader, Materials: .mat, Textures: .tga
   {1, 0.02f, "unitychan_SD_humanoid.fbx", "UnityChanSD", "Shader", "Materials", "Textures"},
   {1, 2.00f, "unityExportSphere.fbx", "UnityExportSphere", "Shader", "Materials", "Textures"},
   {1, 2.00f, "unitySphere.fbx", "UnitySphere", "Shader", "Materials", "Textures"},
-  {1, 2.00f, "unityCube.fbx", "UnityCube", "Shader", "Materials", "Textures"},
+  {1, 1.00f, "unityCube.fbx", "UnityCube", "Shader", "Materials", "Textures"},
   {1, 2.00f, "unityCustomTetra.fbx", "UnityCustomTetra", "Shader", "Materials", "Textures"},
   {1, 2.00f, "unityCustomTetraWithTexture.fbx", "UnityCustomTetraWithTexture", "Shader", "Materials", "Textures"},
   {1, 2.00f, "unityMikuVer2.fbx", "UnityMikuVer2", "Shader", "Materials", "Textures"},
@@ -280,7 +280,6 @@ using namespace Spr;
 
 class MyApp : public FWApp {
 public:
-  std::map<std::string, MeshInfo *> meshMap;
   bool bDrawInfo;
 public:
   MyApp();
@@ -289,7 +288,8 @@ public:
   virtual void TimerFunc(int id);
   virtual void Display();
   virtual void Keyboard(int key, int x, int y);
-  void DisplayMeshMap(Vec3d pos, float scl, bool flag=true);
+  void DisplayMeshMap(std::map<std::string, MeshInfo *> &meshMap,
+    Vec3d pos, float scl, bool flag=true);
   int LoadFBX(Vec3d pos, const char *base, IMPInfo *imp);
 };
 
@@ -456,7 +456,8 @@ void MyApp::Keyboard(int key, int x, int y)
   }
 }
 
-void MyApp::DisplayMeshMap(Vec3d pos, float scl, bool flag)
+void MyApp::DisplayMeshMap(std::map<std::string, MeshInfo *> &meshMap,
+  Vec3d pos, float scl, bool flag)
 {
   if(flag) fprintf(stdout, "%zd meshes\n", meshMap.size());
   for(auto it = meshMap.begin(); it != meshMap.end(); ++it){
@@ -536,6 +537,7 @@ void MyApp::DisplayMeshMap(Vec3d pos, float scl, bool flag)
 
 int MyApp::LoadFBX(Vec3d pos, const char *base, IMPInfo *imp)
 {
+  std::map<std::string, MeshInfo *> meshMap;
   FbxManager *manager = FbxManager::Create();
   FbxIOSettings *iosettings = FbxIOSettings::Create(manager, IOSROOT);
   manager->SetIOSettings(iosettings);
@@ -558,7 +560,7 @@ int MyApp::LoadFBX(Vec3d pos, const char *base, IMPInfo *imp)
     else GetNodeAndAttributes(meshMap, root, 0, 0);
   }
   manager->Destroy();
-  DisplayMeshMap(pos, imp->scl, false);
+  DisplayMeshMap(meshMap, pos, imp->scl, false);
   return 0;
 }
 
