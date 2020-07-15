@@ -80,6 +80,8 @@ struct MeshInfo {
   std::vector<int> meshIndices;
   std::vector<FbxVector4> meshVertices;
   std::vector<FbxVector4> meshNormals;
+  std::vector<FbxColor> meshColors;
+  std::vector<FbxVector2> meshUVs;
 };
 
 void GetMesh(MeshInfo &mi, FbxNodeAttribute *a);
@@ -179,7 +181,6 @@ void GetMesh(MeshInfo &mi, FbxNodeAttribute *a)
   static char buf[4096];
   buf[0] = '\0';
   sprintf_s(buf, sizeof(buf), "%6d polygons, %6d vertices", polynum, vtxnum);
-  fprintf(stdout, "    %s\n", buf);
   mi.meshIndices.reserve(polynum * 3);
   for(int i = 0; i < polynum; ++i){
     int ps = m->GetPolygonSize(i); // vertices count [3|4]
@@ -218,7 +219,7 @@ void GetMesh(MeshInfo &mi, FbxNodeAttribute *a)
   //   FbxLayerElementArrayTemplate<int> &idxAry = normelem->GetIndexArray();
   //   FbxLayerElementArrayTemplate<FbxVector4> &dirAry = normelem->GetDirectArray();
   //   int idxnum = idxAry.GetCount();
-  //   int normnum = dirAry.GetCount();
+  //   int dirnum = dirAry.GetCount();
   // }
 #endif
   int elemnum = m->GetElementNormalCount();
@@ -230,7 +231,7 @@ void GetMesh(MeshInfo &mi, FbxNodeAttribute *a)
   const auto &idxAry = normelem->GetIndexArray();
   const auto &dirAry = normelem->GetDirectArray();
   int idxnum = idxAry.GetCount(); // may be 0 when eDirect
-  int normnum = dirAry.GetCount();
+  int dirnum = dirAry.GetCount();
   assert((rm == FbxGeometryElement::eDirect) || (rm == FbxGeometryElement::eIndexToDirect));
   // m->GetPolygonVertexNormal(p, n, norm); // update &norm
   FbxArray<FbxVector4> normals;
@@ -266,6 +267,36 @@ void GetMesh(MeshInfo &mi, FbxNodeAttribute *a)
       mi.meshNormals.push_back(norm);
     }
   }
+  static char str[4096];
+  str[0] = '\0';
+  int colelemnum = m->GetElementVertexColorCount();
+  for(int i = 0; i < colelemnum; ++i){
+    FbxGeometryElementVertexColor *colelem = m->GetElementVertexColor(i);
+    assert(colelem);
+    auto colmm = colelem->GetMappingMode();
+    auto colrm = colelem->GetReferenceMode();
+    const auto &colidxAry = colelem->GetIndexArray();
+    const auto &coldirAry = colelem->GetDirectArray();
+    int colidxnum = colidxAry.GetCount(); // may be 0 when eDirect
+    int coldirnum = coldirAry.GetCount();
+    assert((colrm == FbxGeometryElement::eDirect) || (colrm == FbxGeometryElement::eIndexToDirect));
+    mi.meshColors.reserve(vtxnum);
+    if(colmm == FbxGeometryElement::eByControlPoint){
+      // assert(false);
+      sprintf_s(str, sizeof(str), "rm: eByControlPoint %6d, %6d", colidxnum, coldirnum);
+    }else if(colmm == FbxGeometryElement::eByPolygonVertex){
+      sprintf_s(str, sizeof(str), "rm: eByPolygonVertex %6d, %6d", colidxnum, coldirnum);
+      for(int j = 0; j < colidxnum; ++j){
+        int cidx = colidxAry.GetAt(j);
+        FbxColor col = coldirAry.GetAt(cidx); // mRed mGreen mBlue mAlpha
+        mi.meshColors.push_back(col);
+      }
+    }else{ // dummy (may not reach here)
+      // assert(false);
+      sprintf_s(str, sizeof(str), "rm: unknown %6d, %6d", colidxnum, coldirnum);
+    }
+  }
+  fprintf(stdout, "    %s, %6d colorelems, %s\n", buf, colelemnum, str);
 #if 0
   FbxStringList uvSetNameList;
   m->GetUVSetNames(uvSetNameList);
@@ -464,11 +495,13 @@ void MyApp::DisplayMeshMap(std::map<std::string, MeshInfo *> &meshMap,
     const std::string &name = it->first;
     MeshInfo *mi = it->second;
     const std::string &meshName = mi->meshName;
+    size_t colnum = mi->meshColors.size();
     size_t vtxnum = mi->meshVertices.size();
+    assert(colnum == 0 || colnum == vtxnum);
     if(!vtxnum) continue;
     std::vector<Vec2f> coords = {
       {0.5f, 0.633f}, {1, 0.922f}, {0.5f, 0.056f}, {0, 0.922f}};
-    Vec4f col = fwSdk->GetRender()->GetReservedColor(GRRenderBaseIf::NAVY);
+    Vec4f col = fwSdk->GetRender()->GetReservedColor(GRRenderBaseIf::NAVY); // SILVER
     GRMeshDesc meshd;
     meshd.vertices.reserve(vtxnum);
     meshd.texCoords.reserve(vtxnum);
@@ -481,7 +514,11 @@ void MyApp::DisplayMeshMap(std::map<std::string, MeshInfo *> &meshMap,
       int idx = mi->meshIndices[i];
       meshd.vertices.push_back(scl * Vec3f(vertex[0], vertex[1], vertex[2]));
       meshd.texCoords.push_back(coords[idx % coords.size()]); // now unexpected UV
-      meshd.colors.push_back(col);
+      if(!colnum) meshd.colors.push_back(col);
+      else{
+        FbxColor c = mi->meshColors[i];
+        meshd.colors.push_back(Vec4f(c.mRed, c.mGreen, c.mBlue, c.mAlpha));
+      }
       if(flag) fprintf(stdout, "%d: %f, %f, %f\n", idx, vertex[0], vertex[1], vertex[2]);
     }
     for(int i = 0; i < mi->meshNormals.size(); ++i){
@@ -517,7 +554,7 @@ void MyApp::DisplayMeshMap(std::map<std::string, MeshInfo *> &meshMap,
     Vec4f(0.2f, 0.2f, 0.2f, 1.0f), // specular
     Vec4f(0.5f, 0.5f, 0.5f, 1.0f), // emissive
     10.0); // power
-  matd.texname = "../../../UnityAssets/custom-tools/Textures/72dpi_256x256.png";
+  //matd.texname = "../../../UnityAssets/custom-tools/Textures/72dpi_256x256.png";
   GRFrameDesc frmd = GRFrameDesc(); // .transform = Affinef();
 
   GRSceneIf *grScene = fwSdk->GetScene(0)->GetGRScene();
