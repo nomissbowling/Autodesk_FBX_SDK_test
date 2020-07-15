@@ -513,7 +513,7 @@ void MyApp::DisplayMeshMap(std::map<std::string, MeshInfo *> &meshMap,
     //Vec4f col = fwSdk->GetRender()->GetReservedColor(GRRenderBaseIf::NAVY);
     //Vec4f col = fwSdk->GetRender()->GetReservedColor(GRRenderBaseIf::SILVER);
     std::vector<float> c(3); std::generate(c.begin(), c.end(),
-      []{return (rd() % 256) / 255.0f;}); // std::ref(rd)
+      []{return ((rd() % 128) + 64) / 255.0f;}); // std::ref(rd)
     Vec4f col = Vec4f(c[0], c[1], c[2], 1.0f);
     GRMeshDesc meshd;
     meshd.vertices.reserve(vtxnum);
