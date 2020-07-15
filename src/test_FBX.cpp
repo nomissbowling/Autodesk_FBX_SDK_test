@@ -38,12 +38,17 @@
 #include <map>
 #include <unordered_map>
 
+#include <functional>
+#include <random>
+
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <fbxsdk.h>
+
+std::random_device rd;
 
 struct IMPInfo {
   int flag;
@@ -505,7 +510,11 @@ void MyApp::DisplayMeshMap(std::map<std::string, MeshInfo *> &meshMap,
     if(!vtxnum) continue;
     std::vector<Vec2f> coords = {
       {0.5f, 0.633f}, {1, 0.922f}, {0.5f, 0.056f}, {0, 0.922f}};
-    Vec4f col = fwSdk->GetRender()->GetReservedColor(GRRenderBaseIf::NAVY); // SILVER
+    //Vec4f col = fwSdk->GetRender()->GetReservedColor(GRRenderBaseIf::NAVY);
+    //Vec4f col = fwSdk->GetRender()->GetReservedColor(GRRenderBaseIf::SILVER);
+    std::vector<float> c(3); std::generate(c.begin(), c.end(),
+      []{return (rd() % 256) / 255.0f;}); // std::ref(rd)
+    Vec4f col = Vec4f(c[0], c[1], c[2], 1.0f);
     GRMeshDesc meshd;
     meshd.vertices.reserve(vtxnum);
     meshd.texCoords.reserve(vtxnum);
