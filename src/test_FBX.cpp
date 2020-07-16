@@ -90,6 +90,10 @@ struct MeshInfo {
 };
 
 void GetMesh(MeshInfo &mi, FbxNodeAttribute *a);
+int GetMeshVertices(MeshInfo &mi, FbxMesh *m, char *msg, size_t sz);
+int GetMeshNormals(MeshInfo &mi, FbxMesh *m, char *msg, size_t sz);
+int GetMeshVertexColors(MeshInfo &mi, FbxMesh *m, char *msg, size_t sz);
+int GetMeshUVs(MeshInfo &mi, FbxMesh *m, char *msg, size_t sz);
 
 void depth(int d)
 {
@@ -180,12 +184,21 @@ void GetNodeAndAttributes(std::map<std::string, MeshInfo *> &meshMap,
 
 void GetMesh(MeshInfo &mi, FbxNodeAttribute *a)
 {
+  static char msg[4096];
+  msg[0] = '\0';
   FbxMesh *m = (FbxMesh *)a;
+  int len = 0;
+  len += GetMeshVertices(mi, m, msg + len, sizeof(msg) - len);
+  len += GetMeshNormals(mi, m, msg + len, sizeof(msg) - len);
+  len += GetMeshVertexColors(mi, m, msg + len, sizeof(msg) - len);
+  len += GetMeshUVs(mi, m, msg + len, sizeof(msg) - len);
+  fprintf(stdout, "    %s\n", msg);
+}
+
+int GetMeshVertices(MeshInfo &mi, FbxMesh *m, char *msg, size_t sz)
+{
   int polynum = m->GetPolygonCount();
   int vtxnum = m->GetPolygonVertexCount(); // count of indices
-  static char buf[4096];
-  buf[0] = '\0';
-  sprintf_s(buf, sizeof(buf), "%6d polygons, %6d vertices", polynum, vtxnum);
   mi.meshIndices.reserve(polynum * 3);
   for(int i = 0; i < polynum; ++i){
     int ps = m->GetPolygonSize(i); // vertices count [3|4]
@@ -211,6 +224,11 @@ void GetMesh(MeshInfo &mi, FbxNodeAttribute *a)
     mi.meshVertices.push_back(vertex);
   }
 #endif
+  return sprintf_s(msg, sz, "%6d polygons, %6d vertices", polynum, vtxnum);
+}
+
+int GetMeshNormals(MeshInfo &mi, FbxMesh *m, char *msg, size_t sz)
+{
 #if 0 // obsoleted ?
   // int layernum = m->GetLayerCount(); // may be 1
   // for(int i = 0; i < layernum; ++i){
@@ -251,6 +269,7 @@ void GetMesh(MeshInfo &mi, FbxNodeAttribute *a)
       mi.meshNormals.push_back(norm);
     }
   }else if(mm == FbxGeometryElement::eByPolygonVertex){
+    int polynum = m->GetPolygonCount();
     int idx = 0;
     for(int i = 0; i < polynum; ++i){
       int ps = m->GetPolygonSize(i); // vertices count [3|4]
@@ -272,40 +291,51 @@ void GetMesh(MeshInfo &mi, FbxNodeAttribute *a)
       mi.meshNormals.push_back(norm);
     }
   }
+  return sprintf_s(msg, sz, ", n%d,%d", idxnum, dirnum);
+}
+
+int GetMeshVertexColors(MeshInfo &mi, FbxMesh *m, char *msg, size_t sz)
+{
+  FbxColor rcol = {0.8, 0.0, 0.0, 1.0};
   static char str[4096];
   str[0] = '\0';
-  int colelemnum = m->GetElementVertexColorCount();
-  for(int i = 0; i < colelemnum; ++i){
-    FbxGeometryElementVertexColor *colelem = m->GetElementVertexColor(i);
+  int elemnum = m->GetElementVertexColorCount();
+  assert(elemnum <= 1);
+  for(int e = 0; e < elemnum; ++e){
+    FbxGeometryElementVertexColor *colelem = m->GetElementVertexColor(e);
     assert(colelem);
-    auto colmm = colelem->GetMappingMode();
-    auto colrm = colelem->GetReferenceMode();
-    const auto &colidxAry = colelem->GetIndexArray();
-    const auto &coldirAry = colelem->GetDirectArray();
-    int colidxnum = colidxAry.GetCount(); // may be 0 when eDirect
-    int coldirnum = coldirAry.GetCount();
-    assert((colrm == FbxGeometryElement::eDirect) || (colrm == FbxGeometryElement::eIndexToDirect));
-    mi.meshColors.reserve(vtxnum);
-    if(colmm == FbxGeometryElement::eByControlPoint){
-      sprintf_s(str, sizeof(str), "CP%d %d, %d", colrm, colidxnum, coldirnum);
-      for(int j = 0; j < vtxnum; ++j){ // vtxnum == ControlPoint count ?
-        int cidx = colrm == FbxGeometryElement::eDirect ? j : colidxAry.GetAt(j);
-        FbxColor col = coldirAry.GetAt(cidx); // mRed mGreen mBlue mAlpha
-        mi.meshColors.push_back(col);
+    auto mm = colelem->GetMappingMode();
+    auto rm = colelem->GetReferenceMode();
+    const auto &idxAry = colelem->GetIndexArray();
+    const auto &dirAry = colelem->GetDirectArray();
+    int idxnum = idxAry.GetCount(); // may be 0 when eDirect
+    int dirnum = dirAry.GetCount();
+    assert((rm == FbxGeometryElement::eDirect) || (rm == FbxGeometryElement::eIndexToDirect));
+    mi.meshColors.reserve(mi.meshIndices.size()); // mi.meshIndices.size() == vtxnum ?
+    if(mm == FbxGeometryElement::eByControlPoint){
+      sprintf_s(str, sizeof(str), "CP%d %d, %d", rm, idxnum, dirnum);
+      for(auto idx: mi.meshIndices){ // mi.meshIndices.size() == vtxnum ?
+        int cidx = rm == FbxGeometryElement::eDirect ? idx : idxAry.GetAt(idx);
+        FbxColor col = dirAry.GetAt(cidx); // mRed mGreen mBlue mAlpha
+        mi.meshColors.push_back(!dirnum ? rcol : col);
       }
-    }else if(colmm == FbxGeometryElement::eByPolygonVertex){
-      sprintf_s(str, sizeof(str), "PV%d %d, %d", colrm, colidxnum, coldirnum);
-      for(int j = 0; j < colidxnum; ++j){
-        int cidx = colrm == FbxGeometryElement::eDirect ? j : colidxAry.GetAt(j);
-        FbxColor col = coldirAry.GetAt(cidx); // mRed mGreen mBlue mAlpha
+    }else if(mm == FbxGeometryElement::eByPolygonVertex){
+      sprintf_s(str, sizeof(str), "PV%d %d, %d", rm, idxnum, dirnum);
+      for(int idx = 0; idx < idxnum; ++idx){ // mi.meshIndices.size() == idxnum ? or idxnum == 0 ?
+        int cidx = rm == FbxGeometryElement::eDirect ? idx : idxAry.GetAt(idx);
+        FbxColor col = dirAry.GetAt(cidx); // mRed mGreen mBlue mAlpha
         mi.meshColors.push_back(col);
       }
     }else{ // dummy (may not reach here)
       // assert(false);
-      sprintf_s(str, sizeof(str), "UK%d %d, %d", colrm, colidxnum, coldirnum);
+      sprintf_s(str, sizeof(str), "UK%d %d, %d", rm, idxnum, dirnum);
     }
   }
-  fprintf(stdout, "    %s, %de%s\n", buf, colelemnum, str);
+  return sprintf_s(msg, sz, ", %de%s", elemnum, str);
+}
+
+int GetMeshUVs(MeshInfo &mi, FbxMesh *m, char *msg, size_t sz)
+{
 #if 0
   FbxStringList uvSetNameList;
   m->GetUVSetNames(uvSetNameList);
@@ -314,6 +344,7 @@ void GetMesh(MeshInfo &mi, FbxNodeAttribute *a)
   bool unmapped;
   m->GetPolygonVertexUV(p, n, uvSetName, uv, unmapped);
 #endif
+  return sprintf_s(msg, sz, "");
 }
 
 using namespace Spr;
