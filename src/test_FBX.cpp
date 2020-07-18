@@ -80,6 +80,36 @@ const char *typeNames[] = {
   "eBoundary", "eNurbsSurface", "eShape", "eLODGroup", "eSubDiv",
   "eCachedEffect", "eLine"};
 
+class StrBuilder {
+public:
+  char buf[4096];
+  size_t sz = sizeof(buf);
+  int len;
+public:
+  StrBuilder();
+  virtual ~StrBuilder();
+  int mprintf(const char *fmt, ...);
+};
+
+StrBuilder::StrBuilder() : len(0)
+{
+  buf[len] = '\0';
+}
+
+StrBuilder::~StrBuilder()
+{
+}
+
+int StrBuilder::mprintf(const char *fmt, ...)
+{
+  va_list varargs;
+  va_start(varargs, fmt);
+  int r = vsprintf_s(buf + len, sz - len, fmt, varargs);
+  va_end(varargs);
+  len += r;
+  return r;
+}
+
 class MeshInfo {
 public:
   FbxColor rcol = {0.8, 0.0, 0.0, 1.0};
@@ -92,9 +122,7 @@ public:
   std::vector<FbxVector4> meshNormals;
   std::vector<FbxColor> meshColors;
   std::vector<FbxVector2> meshUVs;
-  char msg[4096];
-  size_t sz = sizeof(msg);
-  int len;
+  StrBuilder msg;
 public:
   MeshInfo(const std::string &name);
   virtual ~MeshInfo();
@@ -110,7 +138,6 @@ public:
 
 MeshInfo::MeshInfo(const std::string &name) : meshName(name)
 {
-  msg[len = 0] = '\0';
 }
 
 MeshInfo::~MeshInfo()
@@ -129,16 +156,14 @@ void MeshInfo::GetNodeAndAttributes(std::map<std::string, MeshInfo *> &meshMap,
 {
   depth(d);
   fprintf(stdout, "%4d[%s]", n, node->GetName());
-  static char buf[4096];
-  buf[0] = '\0';
-  int p = 0;
+  StrBuilder str;
   int attrcount = node->GetNodeAttributeCount();
   for(int i = 0; i < attrcount; ++i){
     FbxNodeAttribute *a = node->GetNodeAttributeByIndex(i);
     FbxNodeAttribute::EType t = a->GetAttributeType();
-    p += sprintf_s(buf + p, sizeof(buf) - p, ":%s", typeNames[t]);
+    str.mprintf(":%s", typeNames[t]);
   }
-  fprintf(stdout, "(%d%s)", attrcount, buf);
+  fprintf(stdout, "(%d%s)", attrcount, str.buf);
   MeshInfo *mi = NULL;
   FbxMesh *mesh = node->GetMesh();
   if(!mesh) fprintf(stdout, "\n");
@@ -211,7 +236,7 @@ void MeshInfo::GetMesh(FbxNodeAttribute *a)
   GetMeshNormals(m);
   GetMeshVertexColors(m);
   GetMeshUVs(m);
-  fprintf(stdout, "    %s\n", msg);
+  fprintf(stdout, "    %s\n", msg.buf);
 }
 
 void MeshInfo::GetMeshVertices(FbxMesh *m)
@@ -243,7 +268,7 @@ void MeshInfo::GetMeshVertices(FbxMesh *m)
     meshVertices.push_back(vertex);
   }
 #endif
-  len += sprintf_s(msg + len, sz - len, "%6d polygons, %6d vertices", polynum, vtxnum);
+  msg.mprintf("%6d polygons, %6d vertices", polynum, vtxnum);
 }
 
 void MeshInfo::GetMeshNormals(FbxMesh *m)
@@ -310,13 +335,12 @@ void MeshInfo::GetMeshNormals(FbxMesh *m)
       meshNormals.push_back(norm);
     }
   }
-  len += sprintf_s(msg + len, sz - len, ", n%d,%d", idxnum, dirnum);
+  msg.mprintf(", n%d,%d", idxnum, dirnum);
 }
 
 void MeshInfo::GetMeshVertexColors(FbxMesh *m)
 {
-  static char str[4096];
-  str[0] = '\0';
+  StrBuilder str;
   int elemnum = m->GetElementVertexColorCount();
   assert(elemnum <= 1);
   for(int e = 0; e < elemnum; ++e){
@@ -331,14 +355,14 @@ void MeshInfo::GetMeshVertexColors(FbxMesh *m)
     assert((rm == FbxGeometryElement::eDirect) || (rm == FbxGeometryElement::eIndexToDirect));
     meshColors.reserve(meshIndices.size()); // meshIndices.size() == vtxnum ?
     if(mm == FbxGeometryElement::eByControlPoint){
-      sprintf_s(str, sizeof(str), "CP%d %d, %d", rm, idxnum, dirnum);
+      str.mprintf("CP%d %d, %d", rm, idxnum, dirnum);
       for(auto idx: meshIndices){ // meshIndices.size() == vtxnum ?
         int cidx = rm == FbxGeometryElement::eDirect ? idx : idxAry.GetAt(idx);
         FbxColor col = dirAry.GetAt(cidx); // mRed mGreen mBlue mAlpha
         meshColors.push_back(cidx >= dirnum ? rcol : idx >= idxnum ? gcol : col);
       }
     }else if(mm == FbxGeometryElement::eByPolygonVertex){
-      sprintf_s(str, sizeof(str), "PV%d %d, %d", rm, idxnum, dirnum);
+      str.mprintf("PV%d %d, %d", rm, idxnum, dirnum);
       for(int idx = 0; idx < idxnum; ++idx){ // meshIndices.size() == idxnum ? or idxnum == 0 ?
         int cidx = rm == FbxGeometryElement::eDirect ? idx : idxAry.GetAt(idx);
         FbxColor col = dirAry.GetAt(cidx); // mRed mGreen mBlue mAlpha
@@ -346,10 +370,10 @@ void MeshInfo::GetMeshVertexColors(FbxMesh *m)
       }
     }else{ // dummy (may not reach here)
       // assert(false);
-      sprintf_s(str, sizeof(str), "UK%d %d, %d", rm, idxnum, dirnum);
+      str.mprintf("UK%d %d, %d", rm, idxnum, dirnum);
     }
   }
-  len += sprintf_s(msg + len, sz - len, ", %de%s", elemnum, str);
+  msg.mprintf(", %de%s", elemnum, str.buf);
 }
 
 void MeshInfo::GetMeshUVs(FbxMesh *m)
@@ -362,7 +386,7 @@ void MeshInfo::GetMeshUVs(FbxMesh *m)
   bool unmapped;
   m->GetPolygonVertexUV(p, n, uvSetName, uv, unmapped);
 #endif
-  len += sprintf_s(msg + len, sz - len, "");
+  msg.mprintf("");
 }
 
 using namespace Spr;
@@ -641,12 +665,10 @@ int MyApp::LoadFBX(Vec3d pos, const char *base, IMPInfo *imp)
   FbxIOSettings *iosettings = FbxIOSettings::Create(manager, IOSROOT);
   manager->SetIOSettings(iosettings);
   FbxImporter *importer = FbxImporter::Create(manager, "Importer");
-  char fn[1024];
-  strcpy_s(fn, sizeof(fn), base);
-  strcat_s(fn, sizeof(fn), "\\");
-  strcat_s(fn, sizeof(fn), imp->fbx);
-  fprintf(stdout, "Loading: [%s]\n", fn);
-  if(!importer->Initialize(fn, -1, manager->GetIOSettings())){
+  StrBuilder fn;
+  fn.mprintf("%s\\%s", base, imp->fbx);
+  fprintf(stdout, "Loading: [%s]\n", fn.buf);
+  if(!importer->Initialize(fn.buf, -1, manager->GetIOSettings())){
     fprintf(stderr, "import: %s\n", importer->GetStatus().GetErrorString());
   }else{
     FbxScene *scene = FbxScene::Create(manager, "Scene");
